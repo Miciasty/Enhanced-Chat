@@ -1,4 +1,12 @@
-name: Enhanced Chat
+name: EnhancedChat
 version: '${project.version}'
 main: nsk.enhancedchat.EnhancedChat
 api-version: '1.20'
+
+author: .n.u
+prefix: Enhanced Chat
+
+commands:
+    ec:
+        description: Main command for Enhanced Chat plugin.
+        usage: None
