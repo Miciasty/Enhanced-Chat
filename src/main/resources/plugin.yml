@@ -1,0 +1,4 @@
+name: Enhanced Chat
+version: '${project.version}'
+main: nsk.enhancedchat.EnhancedChat
+api-version: '1.20'
