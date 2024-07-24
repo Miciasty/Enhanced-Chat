@@ -28,10 +28,10 @@
 
 
 ### Chat type:
-- [ ] World chat
+- [x] World chat
 - [ ] Group chat
 - [ ] "Private" chat
-- [ ] Local chat
+- [x] Local chat
 - [ ] Character chat
 - [ ] **Safemode**
 

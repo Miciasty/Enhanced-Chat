@@ -1,0 +1,35 @@
+
+# Enhanced Chat - Translations File
+
+EnhancedChat:
+
+    # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
+    #   Predefined color tags
+    #   Those 4 types of tags are allowed to use HEX and only HEX codes.
+    # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
+
+    tags:
+        error:      "#FF5555"
+        warning:    "#FFAA00"
+        success:    "#55FF55"
+        info:       "#5555FF"
+
+    # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
+    #   Messages translations
+    #
+    #   Those are the messages used by Enhanced Ores. You can use predefined tags such as:
+    #   - <error>   </error>
+    #   - <warning> </warning>
+    #   - <success> </success>
+    #   - <info>    </info>
+    #
+    #   You are also allowed to use every possible format you can find in Kyori Adventure's
+    #   MiniMessages under this link: https://docs.advntr.dev/minimessage/format.html
+    # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
+
+    messages:
+
+        #   Private message constructor!
+        #   Use word '<sender>' to display sender name
+        #   use word '<target>' to display target name
+        private:    "(☁) [<sender> -> <target>]: "

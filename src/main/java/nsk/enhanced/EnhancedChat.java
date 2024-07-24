@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import nsk.enhanced.Events.Commands.PrivateMessageCommand;
 import nsk.enhanced.Events.OnPlayerChatEvent;
 import nsk.enhanced.Player.Character;
 import nsk.enhanced.System.EnhancedLogger;
@@ -76,12 +77,20 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
             enhancedLogger.severe("Registration onPlayerCommandPreprocessEvent failed! - " + e.getMessage());
         }
 
-        PluginCommand command = this.getCommand("ec");
-        if (command != null) {
-            command.setExecutor(this);
-            enhancedLogger.fine("Commands registered.");
+        PluginCommand ec = this.getCommand("ec");
+        if (ec != null) {
+            ec.setExecutor(this);
+            enhancedLogger.fine("Command 'ec' registered.");
         } else {
             enhancedLogger.severe("Command 'eo' is not registered.");
+        }
+
+        PluginCommand msg = this.getCommand("msg");
+        if (msg != null) {
+            msg.setExecutor(new PrivateMessageCommand());
+            enhancedLogger.fine("Command 'msg' registered.");
+        } else {
+            enhancedLogger.severe("Command 'msg' is not registered.");
         }
 
         getServer().getPluginManager().registerEvents(this, this);
@@ -106,7 +115,7 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
         config = YamlConfiguration.loadConfiguration(configFile);
 
     }
-    private FileConfiguration getConfigFile() {
+    public FileConfiguration getConfigFile() {
         return config;
     }
     private void saveConfigFile() {
@@ -473,6 +482,10 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
         }
 
         return false;
+    }
+
+    public EnhancedLogger getEnhancedLogger() {
+        return enhancedLogger;
     }
 
 }

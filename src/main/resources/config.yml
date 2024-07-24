@@ -25,3 +25,28 @@ EnhancedChat:
         show_sql:       false
         format_sql:     true
         sql_comments:   true
+
+Security:
+
+    max_weight: 18
+
+Chat:
+
+    type:
+
+        # World chat - Enables chat per world
+        World:  true        # [ true / false ] if false chat will be global.
+
+        # Local chat - Restrict chat to range
+        Local:
+            enable: true    # [ true / false ]
+            range: 15       # Range in blocks
+
+        # Private chat - Enables private chat [WARNING! Private chat is not under surveillance.]
+        Private: false      # [ true / false ]
+
+        # Character chat - Enables character chat [ It's more likely for Role-Play ]
+        #   Enables commands:
+        #       - /me
+        #       - /do
+        Character: false      # [ true / false ]

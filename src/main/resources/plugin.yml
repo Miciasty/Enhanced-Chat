@@ -10,3 +10,7 @@ commands:
     ec:
         description: Main command for Enhanced Chat plugin.
         usage: None
+
+    msg:
+        description: Sends a private message to another player.
+        usage: /msg <player> <message>
