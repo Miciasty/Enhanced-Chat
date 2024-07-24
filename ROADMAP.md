@@ -40,6 +40,7 @@
 - [ ] '@mention' & '@ping' system
 - [ ] Word replacer system
 - [ ] Message Surveillance System
+- [ ] Hide commands
 
 ### Support:
 - [ ] Kyori Adventure Support
