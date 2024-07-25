@@ -33,3 +33,7 @@ EnhancedChat:
         #   Use word '<sender>' to display sender name
         #   use word '<target>' to display target name
         private:    "(☁) [<sender> -> <target>]: "
+
+    alerts:
+
+        mute:   "<red>You have been muted for <time> seconds due to spamming."

@@ -3,6 +3,7 @@ package nsk.enhanced.System;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import nsk.enhanced.EnhancedChat;
+import nsk.enhanced.System.Alerts.SecurityLevels;
 import nsk.enhanced.System.PluginInstance;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -53,6 +54,10 @@ public class EnhancedLogger extends Logger {
             } else if (level == Level.CONFIG) {
                 Component dev = MiniMessage.miniMessage().deserialize("<gradient:#b28724:#ffc234>[NSK]</gradient><gradient:#1f8eb2:#2dccff> [Devmode] </gradient> <#ffe099>" + message);
                 Bukkit.getConsoleSender().sendMessage(dev);
+
+            } else if (level == SecurityLevels.CHARACTER_WARNING) {
+                Component character = MiniMessage.miniMessage().deserialize("<gradient:#b28724:#ffc234>[Character]</gradient> <#ffe099>" + message);
+                Bukkit.getConsoleSender().sendMessage(character);
             }
             else {
                 Bukkit.getConsoleSender().sendMessage(casual);
@@ -65,6 +70,10 @@ public class EnhancedLogger extends Logger {
         @Override
         public void close() throws SecurityException {}
 
+    }
+
+    public void character(String message) {
+        log(SecurityLevels.CHARACTER_WARNING, message);
     }
 
 }

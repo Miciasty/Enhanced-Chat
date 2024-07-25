@@ -4,25 +4,26 @@ import nsk.enhanced.System.PluginInstance;
 
 public class Warning {
 
-    private String message;
-    private int level;
+    private String code;
+    private int weight;
 
-    public Warning(String message, int level) {
-        setMessage(message);
-        setLevel(level);
+    public Warning(String code, int weight) {
+        setCode(code);
+        setWeight(weight);
     }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
-    private void setMessage(String message) {
-        this.message = message;
+    private void setCode(String code) {
+        this.code = code;
     }
-    private void setLevel(int level) {
+    private void setWeight(int weight) {
         try {
-            if (level >= 0 && level <= 4) {
-                this.level = level;
+            if (weight >= 0 ) {
+                this.weight = weight;
             } else {
-                throw new IllegalArgumentException("Invalid level! Level should be between 0 and 4.");
+                this.weight = 0;
+                throw new IllegalArgumentException("Invalid weight! Weight cannot be negative.");
             }
         } catch (Exception e) {
             PluginInstance.getInstance().getEnhancedLogger().severe(e.getMessage());
@@ -31,10 +32,10 @@ public class Warning {
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
-    public String getMessage() {
-        return message;
+    public String getCode() {
+        return code;
     }
-    public int getLevel() {
-        return level;
+    public int getWeight() {
+        return weight;
     }
 }

@@ -50,3 +50,21 @@ Chat:
         #       - /me
         #       - /do
         Character: false      # [ true / false ]
+
+    Listener:
+
+        AntiCap:
+            enabled:        true    # [ true / false ]
+
+        AntiFlood:
+            enabled:        true    # [ true / false ]
+            max_characters: 5       # Maximum amount of the same letters in a row
+
+        AntiSpam:
+            enabled:        true    # [ true / false ]
+            max_messages:   4       # Maximum messages in time frame
+            time_frame:     6       # Time frame in seconds
+            mute_duration:  20      # Mute duration in seconds
+
+            Warning:
+                weight:     2       # Weight of the warning alert
