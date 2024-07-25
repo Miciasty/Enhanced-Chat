@@ -6,9 +6,9 @@
 ### General:
 - [ ] Anti Advertising
 - [ ] Anti Bot
-- [ ] Anti Cap
-- [ ] Anti Flood
-- [ ] Anti Spam
+- [x] Anti Cap
+- [x] Anti Flood
+- [x] Anti Spam
 
 
 - [ ] Block commands
@@ -30,7 +30,7 @@
 ### Chat type:
 - [x] World chat
 - [ ] Group chat
-- [ ] "Private" chat
+- [x] "Private" chat
 - [x] Local chat
 - [ ] Character chat
 - [ ] **Safemode**
@@ -43,7 +43,7 @@
 - [ ] Hide commands
 
 ### Support:
-- [ ] Kyori Adventure Support
+- [x] Kyori Adventure Support
   - HEX colors
   - Gradient
   - Transition gradient [ Horizontal \ Vertical ]
