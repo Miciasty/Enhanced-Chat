@@ -1,4 +1,4 @@
-package nsk.enhanced.Events;
+package nsk.enhanced.Events.OnPlayerChat.LOW;
 
 import nsk.enhanced.Player.Character;
 import nsk.enhanced.System.Alerts.Warning;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class OnPlayerChatEvent implements Listener {
+public class OnPlayerChatEvent_LOW implements Listener {
 
     private final EnhancedLogger enhancedLogger = PluginInstance.getInstance().getEnhancedLogger();
 

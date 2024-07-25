@@ -14,6 +14,8 @@ public class Character {
     private UUID uuid;
     private int chatMode;
 
+    private boolean isBot;
+
     private final List<Warning> warnings = new ArrayList<>();
     private LinkedList<Long> messagesTimestamps = new LinkedList<>();
     private long muteUntil = 0;
@@ -25,6 +27,8 @@ public class Character {
         this.setUUID(uuid);
         this.setChatMode(chatMode);
         this.threatLevel = 0;
+
+        this.isBot = true;
     }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
@@ -36,6 +40,10 @@ public class Character {
         this.chatMode = chatMode;
     }
 
+    public void setBot(boolean bot) {
+        this.isBot = bot;
+    }
+
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
     public UUID getUUID() {
@@ -43,6 +51,10 @@ public class Character {
     }
     public int getChatMode() {
         return chatMode;
+    }
+
+    public boolean isBot() {
+        return isBot;
     }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //

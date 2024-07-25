@@ -5,7 +5,8 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import nsk.enhanced.Events.Commands.PrivateMessageCommand;
-import nsk.enhanced.Events.OnPlayerChatEvent;
+import nsk.enhanced.Events.OnPlayerChat.LOW.OnPlayerChatEvent_LOW;
+import nsk.enhanced.Events.OnPlayerChat.LOWEST.OnPlayerChatEvent_LOWEST;
 import nsk.enhanced.Player.Character;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.PluginInstance;
@@ -20,6 +21,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.hibernate.Session;
@@ -67,9 +69,13 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
         // configureHibernate();
 
         // --- --- --- --- // Events Managers & Listeners // --- --- --- --- //
-        OnPlayerChatEvent onPlayerChatEvent = new OnPlayerChatEvent();
+        OnPlayerChatEvent_LOWEST onPlayerChatEvent_lowest = new OnPlayerChatEvent_LOWEST();
+        OnPlayerChatEvent_LOW onPlayerChatEvent_low = new OnPlayerChatEvent_LOW();
+
         try {
-            getServer().getPluginManager().registerEvents(onPlayerChatEvent, this);
+            getServer().getPluginManager().registerEvents(onPlayerChatEvent_lowest, this);
+            getServer().getPluginManager().registerEvents(onPlayerChatEvent_low, this);
+
             enhancedLogger.fine("onPlayerChatEvent registered");
             enhancedLogger.fine("onPlayerCommandPreprocessEvent registered.");
         } catch (Exception e) {
@@ -218,6 +224,18 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
 
     public boolean isCharacter(Character character) {
         return characters.contains(character);
+    }
+
+    // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
+
+    @EventHandler(priority = EventPriority.LOW)
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+
+        Character character = getCharacter(player.getUniqueId());
+        if (character != null) {
+            character.setBot(false);
+        }
     }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //

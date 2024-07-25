@@ -53,6 +53,9 @@ Chat:
 
     Listener:
 
+        AntiBot:
+            enabled:        true    # [ true / false ]
+
         AntiCap:
             enabled:        true    # [ true / false ]
 
