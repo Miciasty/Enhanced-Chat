@@ -7,9 +7,17 @@ public class Warning {
     private String code;
     private int weight;
 
+    private String link;                    // Optional only for suspicious links
+
     public Warning(String code, int weight) {
         setCode(code);
         setWeight(weight);
+    }
+
+    public Warning(String code, int weight, String link) {
+        setCode(code);
+        setWeight(weight);
+        setLink(link);
     }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
@@ -29,6 +37,9 @@ public class Warning {
             PluginInstance.getInstance().getEnhancedLogger().severe(e.getMessage());
         }
     }
+    private void setLink(String link) {
+        this.link = link;
+    }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
@@ -37,5 +48,8 @@ public class Warning {
     }
     public int getWeight() {
         return weight;
+    }
+    public String getLink() {
+        return link;
     }
 }

@@ -36,4 +36,7 @@ EnhancedChat:
 
     alerts:
 
-        mute:   "<red>You have been muted for <time> seconds due to spamming."
+        mute:           "<red>You have been muted for <time> seconds due to spamming."
+        flood:          "<red>Hey yo! Too many same characters in 1 word."
+        advertisement:  "<red>Hey! We don't allow advertisements here!"
+        dangerous_link: "<red>Hmm.. did you just sent some weird suspicious link???"

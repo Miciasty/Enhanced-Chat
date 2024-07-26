@@ -1,6 +1,7 @@
 package nsk.enhanced.Events.OnPlayerChat.LOWEST;
 
 import nsk.enhanced.Player.Character;
+import nsk.enhanced.System.Alerts.Warning;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.PluginInstance;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -12,6 +13,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class OnPlayerChatEvent_LOWEST implements Listener {
 
@@ -25,6 +28,7 @@ public class OnPlayerChatEvent_LOWEST implements Listener {
     // --- --- --- --- --- //
 
     private final boolean AntiBot = config.getBoolean("Chat.Listener.AntiBot.enabled");
+    private final String AntiAdvertising = config.getString("Chat.Listener.AntiAdvertising");
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
@@ -41,6 +45,12 @@ public class OnPlayerChatEvent_LOWEST implements Listener {
             PluginInstance.getInstance().addCharacter( character );
         }
 
+        // --- --- --- --- Is Muted? --- --- --- --- //
+        if (character.isMuted()) {
+            player.sendMessage("<gray>You are muted until: " + character.getMuteUntil());
+            event.setCancelled(true);
+        }
+
         // --- --- --- --- Anti Bot --- --- --- --- //
         if (AntiBot) {
             if (character.isBot()) {
@@ -48,5 +58,67 @@ public class OnPlayerChatEvent_LOWEST implements Listener {
             }
         }
 
+        // --- --- --- --- Anti Advertising --- --- --- --- //
+        if (config.getBoolean(AntiAdvertising + ".enabled")) {
+            String message = event.getMessage();
+            if (containsBlockedPhrase(message)) {
+
+                int weight = config.getInt(AntiAdvertising + ".Warning.weight", 5);
+                character.addWarning(new Warning("ad", weight));
+
+                event.setCancelled(true);
+            } else if (containsLink(message) && !isSafeLink(message)) {
+                int weight = config.getInt(AntiAdvertising + ".Warning.suspiciousLink", 10);
+                String link = extractLink(message);
+
+                character.addWarning(new Warning("link", weight, link));
+
+                event.setCancelled(true);
+            }
+        }
+
     }
+
+    // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
+
+    public boolean containsBlockedPhrase(String message) {
+        List<String> blockedPhrases = config.getStringList(AntiAdvertising + ".blocked_phrases");
+        for (String blockedPhrase : blockedPhrases) {
+            if (message.toLowerCase().contains(blockedPhrase.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean containsLink(String message) {
+        String urlPattern = "((http|https|ftp)://)?(www\\.)?[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,}(/\\S*)?";
+        return message.matches( ".*" + urlPattern + ".*") ;
+    }
+
+    public boolean isSafeLink(String message) {
+        List<String> safeDomains = config.getStringList(AntiAdvertising + ".safe_domains");
+        String urlPattern = "((http|https|ftp)://)?(www\\.)?([a-zA-Z0-9\\-\\.]+)\\.[a-zA-Z]{2,}(/\\S*)?";
+        Pattern pattern = Pattern.compile(urlPattern);
+        Matcher matcher = pattern.matcher(message);
+
+        while (matcher.find()) {
+            String domain = matcher.group(3);
+            if (safeDomains.contains(domain.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String extractLink(String message) {
+        String urlPattern = "((http|https|ftp)://)?(www\\.)?[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,}(/\\S*)?";
+        Pattern pattern = Pattern.compile(urlPattern);
+        Matcher matcher = pattern.matcher(message);
+        while (matcher.find()) {
+            String domain = matcher.group();
+        }
+        return null;
+    }
+
 }

@@ -56,13 +56,19 @@ Chat:
         AntiBot:
             enabled:        true    # [ true / false ]
 
+        # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
         AntiCap:
             enabled:        true    # [ true / false ]
 
+        # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
         AntiFlood:
             enabled:        true    # [ true / false ]
             max_characters: 5       # Maximum amount of the same letters in a row
 
+            Warning:
+                weight:     1       # Weight of the warning alert
+
+        # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
         AntiSpam:
             enabled:        true    # [ true / false ]
             max_messages:   4       # Maximum messages in time frame
@@ -71,3 +77,22 @@ Chat:
 
             Warning:
                 weight:     2       # Weight of the warning alert
+
+        # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
+        AntiAdvertising:
+            enabled:        true    # [ true / false ]
+            blocked_phrases:
+                - "example.com"
+                - "join this server"
+                - "visit my server"
+
+            safe_domains:
+                - "example.com"
+                - "interia.pl"
+                - "google.com"
+
+            Warning:
+                weight:         5   # Weight of the warning alert
+                suspiciousLink: 10  # Weight of the warning alert
+
+        # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #

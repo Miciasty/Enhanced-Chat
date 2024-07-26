@@ -42,26 +42,34 @@ public class EnhancedLogger extends Logger {
 
             Component casual = MiniMessage.miniMessage().deserialize("<gradient:#1f8eb2:#2dccff>["+ prefix +"]</gradient> " + message);
 
-            if (level == Level.SEVERE) {
-                Component severe = MiniMessage.miniMessage().deserialize("<gradient:#b24242:#ff5f5f>["+ prefix +"]</gradient> <#ffafaf>" + message);
+            if (level.equals(Level.SEVERE)) {
+                Component severe = MiniMessage.miniMessage().deserialize("<gradient:#b24242:#ff5f5f>[" + prefix + "]</gradient> <#ffafaf>" + message);
                 Bukkit.getConsoleSender().sendMessage(severe);
-            } else if (level == Level.WARNING) {
-                Component warning = MiniMessage.miniMessage().deserialize("<gradient:#b28724:#ffc234>["+ prefix +"]</gradient> <#ffe099>" + message);
+
+            } else if (level.equals(Level.WARNING)) {
+                Component warning = MiniMessage.miniMessage().deserialize("<gradient:#b28724:#ffc234>[" + prefix + "]</gradient> <#ffe099>" + message);
                 Bukkit.getConsoleSender().sendMessage(warning);
-            } else if (level == Level.FINE) {
-                Component fine = MiniMessage.miniMessage().deserialize("<gradient:#3ca800:#56f000>["+ prefix +"]</gradient> <#aaf77f>" + message);
+
+            } else if (level.equals(Level.FINE)) {
+                Component fine = MiniMessage.miniMessage().deserialize("<gradient:#3ca800:#56f000>[" + prefix + "]</gradient> <#aaf77f>" + message);
                 Bukkit.getConsoleSender().sendMessage(fine);
-            } else if (level == Level.CONFIG) {
+
+            } else if (level.equals(Level.CONFIG)) {
                 Component dev = MiniMessage.miniMessage().deserialize("<gradient:#b28724:#ffc234>[NSK]</gradient><gradient:#1f8eb2:#2dccff> [Devmode] </gradient> <#ffe099>" + message);
                 Bukkit.getConsoleSender().sendMessage(dev);
 
-            } else if (level == SecurityLevels.CHARACTER_WARNING) {
+            } else if (level.equals(SecurityLevels.CHARACTER_WARNING)) {
                 Component character = MiniMessage.miniMessage().deserialize("<gradient:#b28724:#ffc234>[Character]</gradient> <#ffe099>" + message);
                 Bukkit.getConsoleSender().sendMessage(character);
-            }
-            else {
+
+            } else if (level.equals(SecurityLevels.SECURITY)) {
+                Component security = MiniMessage.miniMessage().deserialize("<#ff5f5f>⚠</#ff5f5f> <gradient:#6f54b4:#896ece><bold>[SECURITY BREACHED] <#ff5f5f>⚠</#ff5f5f></bold></gradient> <#bdaee4>" + message);
+                Bukkit.getConsoleSender().sendMessage(security);
+
+            } else {
                 Bukkit.getConsoleSender().sendMessage(casual);
             }
+
         }
 
         @Override
@@ -74,6 +82,10 @@ public class EnhancedLogger extends Logger {
 
     public void character(String message) {
         log(SecurityLevels.CHARACTER_WARNING, message);
+    }
+
+    public void security(String message) {
+        log(SecurityLevels.SECURITY, message);
     }
 
 }

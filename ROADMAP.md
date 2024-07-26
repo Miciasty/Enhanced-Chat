@@ -4,8 +4,8 @@
 ## Planned features:
 
 ### General:
-- [ ] Anti Advertising
-- [ ] Anti Bot
+- [x] Anti Advertising
+- [x] Anti Bot
 - [x] Anti Cap
 - [x] Anti Flood
 - [x] Anti Spam

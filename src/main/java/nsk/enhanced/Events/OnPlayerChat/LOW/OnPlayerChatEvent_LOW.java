@@ -52,7 +52,10 @@ public class OnPlayerChatEvent_LOW implements Listener {
         // --- --- --- --- Anti Spam --- --- --- --- //
         if (config.getBoolean(AntiSpam + ".enabled")) {
             if (isSpam(character, player)) {
-                enhancedLogger.info("<red>[AntiSpam]</red> " + player.getName() + " został zmutowany za spamowanie.");
+
+                int weight = config.getInt(AntiSpam + ".Warning.weight", 2);
+                character.addWarning(new Warning("spam", weight));
+
                 event.setCancelled(true);
                 return;
             }
@@ -71,12 +74,16 @@ public class OnPlayerChatEvent_LOW implements Listener {
         if (config.getBoolean(AntiFlood + ".enabled")) {
             String message = event.getMessage();
             if (hasTooManyRepeatingCharacters(message, config.getInt(AntiFlood + ".max_characters"))) {
-                enhancedLogger.info("<red>[AntiFlood]</red> " + player.getName() + " wiadomość została zablokowana za Flood.");
+
+                int weight = config.getInt(AntiFlood + ".Warning.weight", 1);
+                character.addWarning(new Warning("flood", weight));
+
                 event.setCancelled(true);
                 return;
             }
 
         }
+
         // --- --- --- --- World Chat --- --- --- --- //
         if (WorldChat) {
             Set<Player> recipients = event.getRecipients();
@@ -126,21 +133,11 @@ public class OnPlayerChatEvent_LOW implements Listener {
         int MaxMessages = config.getInt(AntiSpam + ".max_messages");                // Max messages
         int MuteDuration = config.getInt(AntiSpam + ".mute_duration") * 1000;       // Mute duration
 
-        int weight = config.getInt(AntiSpam + ".Warning.weight");                   // Warning weight
-
         messageTimestamps.removeIf(timestamp -> currentTime - timestamp > TimeFrame);
 
         if (messageTimestamps.size() >= MaxMessages) {
 
             character.setMuteUntil(currentTime + MuteDuration);
-
-            String template = translations.getString("EnhancedChat.alerts.mute", "<red>You have been muted for <time> seconds due to spamming.");
-            String message = template
-                    .replace("<time>", String.valueOf((MuteDuration / 1000)));
-
-            player.sendMessage(message);
-
-            character.addWarning(new Warning("spam", weight));
 
             return true;
         }

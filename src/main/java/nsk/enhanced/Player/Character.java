@@ -1,8 +1,11 @@
 package nsk.enhanced.Player;
 
 import nsk.enhanced.System.Alerts.Warning;
+import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.PluginInstance;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -10,6 +13,13 @@ import java.util.List;
 import java.util.UUID;
 
 public class Character {
+
+    private final FileConfiguration config = PluginInstance.getInstance().getConfigFile();
+    private final FileConfiguration translations = PluginInstance.getInstance().getTranslationsFile();
+
+    private final EnhancedLogger enhancedLogger = PluginInstance.getInstance().getEnhancedLogger();
+
+    // --- --- --- --- --- --- --- //
 
     private UUID uuid;
     private int chatMode;
@@ -99,9 +109,59 @@ public class Character {
         warnings.add(warning);
         String code = warning.getCode();
 
-        PluginInstance.getInstance().getEnhancedLogger().character(Bukkit.getPlayer(uuid) + " received " + getAllWarningsOfCodeAsSize(code) + " " + code + " warning!");
+        if (warning.getLink() != null) {
+            enhancedLogger.security(Bukkit.getPlayer(uuid) + " sent potentially dangerous link: " + warning.getLink());
+        } else {
+            enhancedLogger.character(Bukkit.getPlayer(uuid) + " received " + getAllWarningsOfCodeAsSize(code) + " " + code + " warning!");
+        }
 
         calculateThreatLevel();
+    }
+
+    private void sendWarning(Warning warning) {
+        Player player = Bukkit.getPlayer(uuid);
+        String code = warning.getCode();
+
+        if (player == null) {
+
+            return;
+        }
+
+        String template, message;
+
+        switch (code) {
+
+            case "spam":
+                int MuteDuration = config.getInt("Chat.Listener.AntiSpam.mute_duration", 20);
+
+                template = translations.getString("EnhancedChat.alerts.mute", "<red>You have been muted for <time> seconds due to spamming.");
+                message = template
+                        .replace("<time>", String.valueOf(MuteDuration));
+
+                player.sendMessage(message);
+                break;
+
+            case "flood":
+                template = translations.getString("EnhancedChat.alerts.flood", "<red>Hey yo! Too many same characters in 1 word.");
+                message = template;
+
+                player.sendMessage(message);
+                break;
+
+            case "ad":
+                template = translations.getString("EnhancedChat.alerts.advertisement", "<red>Hey! We don't allow advertisements here!");
+                message = template;
+
+                player.sendMessage(message);
+                break;
+
+            case "link":
+                template = translations.getString("EnhancedChat.alerts.dangerous_link", "<red>Hmm.. did you just sent some weird suspicious link???");
+                message = template;
+
+                player.sendMessage(message);
+                break;
+        }
     }
 
     // --- --- --- --- --- --- --- //
