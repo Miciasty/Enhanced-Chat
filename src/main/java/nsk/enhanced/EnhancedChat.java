@@ -7,6 +7,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import nsk.enhanced.Events.Commands.PrivateMessageCommand;
 import nsk.enhanced.Events.OnPlayerChat.LOW.OnPlayerChatEvent_LOW;
 import nsk.enhanced.Events.OnPlayerChat.LOWEST.OnPlayerChatEvent_LOWEST;
+import nsk.enhanced.Events.OnPlayerCommandPreprocess.OnPlayerCommandPreprocessLOWEST;
 import nsk.enhanced.Player.Character;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.PluginInstance;
@@ -46,6 +47,9 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
     private File translationsFile;
     private FileConfiguration translations;
 
+    private File blacklistFile;
+    private FileConfiguration blacklist;
+
     private SessionFactory sessionFactory;
 
     private boolean devmode = false;
@@ -65,6 +69,7 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
 
         loadConfiguration();
         loadTranslations();
+        loadBlacklist();
 
         // configureHibernate();
 
@@ -72,14 +77,22 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
         OnPlayerChatEvent_LOWEST onPlayerChatEvent_lowest = new OnPlayerChatEvent_LOWEST();
         OnPlayerChatEvent_LOW onPlayerChatEvent_low = new OnPlayerChatEvent_LOW();
 
+        OnPlayerCommandPreprocessLOWEST onPlayerCommandPreprocessLOWEST = new OnPlayerCommandPreprocessLOWEST();
+
         try {
             getServer().getPluginManager().registerEvents(onPlayerChatEvent_lowest, this);
             getServer().getPluginManager().registerEvents(onPlayerChatEvent_low, this);
 
             enhancedLogger.fine("onPlayerChatEvent registered");
-            enhancedLogger.fine("onPlayerCommandPreprocessEvent registered.");
         } catch (Exception e) {
             enhancedLogger.severe("Registration onPlayerChatEvent failed! - " + e.getMessage());
+        }
+
+        try {
+            getServer().getPluginManager().registerEvents(onPlayerCommandPreprocessLOWEST, this);
+
+            enhancedLogger.fine("onPlayerCommandPreprocessEvent registered");
+        } catch (Exception e) {
             enhancedLogger.severe("Registration onPlayerCommandPreprocessEvent failed! - " + e.getMessage());
         }
 
@@ -145,6 +158,20 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
     }
     public FileConfiguration getTranslationsFile() {
         return translations;
+    }
+
+    private void loadBlacklist() {
+        enhancedLogger.warning("Loading blacklist...");
+        blacklistFile = new File(getDataFolder(), "blacklist.yml");
+        if (!blacklistFile.exists()) {
+            blacklistFile.getParentFile().mkdirs();
+            saveResource("blacklist.yml", false);
+        }
+
+        blacklist = YamlConfiguration.loadConfiguration(blacklistFile);
+    }
+    public FileConfiguration getBlacklistFile() {
+        return blacklist;
     }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //

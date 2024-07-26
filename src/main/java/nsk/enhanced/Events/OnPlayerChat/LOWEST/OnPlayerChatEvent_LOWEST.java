@@ -22,6 +22,7 @@ public class OnPlayerChatEvent_LOWEST implements Listener {
 
     private final FileConfiguration config = PluginInstance.getInstance().getConfigFile();
     private final FileConfiguration translations = PluginInstance.getInstance().getTranslationsFile();
+    private final FileConfiguration blacklist = PluginInstance.getInstance().getBlacklistFile();
 
     private final List<Character> characters = PluginInstance.getInstance().getCharacters();
 
@@ -55,6 +56,21 @@ public class OnPlayerChatEvent_LOWEST implements Listener {
         if (AntiBot) {
             if (character.isBot()) {
                 event.setCancelled(true);
+            }
+        }
+
+        // --- --- --- --- Blacklisted --- --- --- --- //
+        if (config.getBoolean("Chat.Listener.Blacklist.enabled")) {
+            List<String> blacklist = config.getStringList("Words");
+            String message = event.getMessage().toLowerCase();
+
+            for (String word : blacklist) {
+                if (message.contains(word.toLowerCase())) {
+
+                    int weight = config.getInt("Chat.Listener.Blacklist.Warning.Weight", 1);
+                    character.addWarning(new Warning("blacklist", weight));
+                    event.setCancelled(true);
+                }
             }
         }
 

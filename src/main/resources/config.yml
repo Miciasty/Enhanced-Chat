@@ -32,7 +32,7 @@ Security:
 
 Chat:
 
-    type:
+    Type:
 
         # World chat - Enables chat per world
         World:  true        # [ true / false ] if false chat will be global.
@@ -59,6 +59,13 @@ Chat:
         # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
         AntiCap:
             enabled:        true    # [ true / false ]
+
+        # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
+        Blacklist:
+            enabled: true    # [ true / false ]
+
+            Warning:
+                weight: 1       # Weight of the warning alert
 
         # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
         AntiFlood:
@@ -96,3 +103,11 @@ Chat:
                 suspiciousLink: 10  # Weight of the warning alert
 
         # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
+
+Commands:
+
+    block:
+        - "/example"
+
+    ignore:
+        - "/example2"

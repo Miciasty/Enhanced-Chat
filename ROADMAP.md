@@ -11,9 +11,9 @@
 - [x] Anti Spam
 
 
-- [ ] Block commands
-- [ ] Block words
-- [ ] Ignore commands
+- [x] Block commands
+- [x] Block words
+- [x] Ignore commands
 
 
 - [ ] Chat clear

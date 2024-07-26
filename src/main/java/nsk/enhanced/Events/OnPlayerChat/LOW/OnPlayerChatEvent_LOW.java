@@ -24,9 +24,9 @@ public class OnPlayerChatEvent_LOW implements Listener {
     private final FileConfiguration config = PluginInstance.getInstance().getConfigFile();
     private final FileConfiguration translations = PluginInstance.getInstance().getTranslationsFile();
 
-    private final boolean WorldChat = config.getBoolean("Chat.type.World");
-    private final boolean LocalChat = config.getBoolean("Chat.type.Local");
-    private final String PrivateChat = "Chat.type.Private";
+    private final boolean WorldChat = config.getBoolean("Chat.Type.World");
+    private final boolean LocalChat = config.getBoolean("Chat.Type.Local");
+    private final String PrivateChat = "Chat.Type.Private";
 
     private final String AntiSpam = "Chat.Listener.AntiSpam";
     private final String AntiFlood = "Chat.Listener.AntiFlood";
@@ -110,12 +110,6 @@ public class OnPlayerChatEvent_LOW implements Listener {
 
     }
 
-    // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
-
-    @EventHandler(priority = EventPriority.LOW)
-    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        Player player = event.getPlayer();
-    }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 

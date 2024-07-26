@@ -1,5 +1,6 @@
 package nsk.enhanced.Player;
 
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import nsk.enhanced.System.Alerts.Warning;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.PluginInstance;
@@ -131,6 +132,13 @@ public class Character {
 
         switch (code) {
 
+            case "blacklist":
+                template = translations.getString("EnhancedChat.alerts.blacklist", "<yellow>You just said the forbidden word... We will remember that!");
+                message = template;
+
+                player.sendMessage(MiniMessage.miniMessage().deserialize(message));
+
+
             case "spam":
                 int MuteDuration = config.getInt("Chat.Listener.AntiSpam.mute_duration", 20);
 
@@ -138,28 +146,28 @@ public class Character {
                 message = template
                         .replace("<time>", String.valueOf(MuteDuration));
 
-                player.sendMessage(message);
+                player.sendMessage(MiniMessage.miniMessage().deserialize(message));
                 break;
 
             case "flood":
                 template = translations.getString("EnhancedChat.alerts.flood", "<red>Hey yo! Too many same characters in 1 word.");
                 message = template;
 
-                player.sendMessage(message);
+                player.sendMessage(MiniMessage.miniMessage().deserialize(message));
                 break;
 
             case "ad":
                 template = translations.getString("EnhancedChat.alerts.advertisement", "<red>Hey! We don't allow advertisements here!");
                 message = template;
 
-                player.sendMessage(message);
+                player.sendMessage(MiniMessage.miniMessage().deserialize(message));
                 break;
 
             case "link":
                 template = translations.getString("EnhancedChat.alerts.dangerous_link", "<red>Hmm.. did you just sent some weird suspicious link???");
                 message = template;
 
-                player.sendMessage(message);
+                player.sendMessage(MiniMessage.miniMessage().deserialize(message));
                 break;
         }
     }
