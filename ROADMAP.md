@@ -16,7 +16,7 @@
 - [x] Ignore commands
 
 
-- [ ] Chat clear
+- [x] Chat clear
 - [ ] Chat color
 
 

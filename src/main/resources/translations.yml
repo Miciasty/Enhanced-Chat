@@ -43,4 +43,6 @@ EnhancedChat:
         dangerous_link: "<red>Hmm.. did you just sent some weird suspicious link???"
 
     commands:
-        blocked:    "<gold>This command is blocked."
+        blocked:        "<gold>This command is blocked."
+        player_clear:   "<gold>Chat has been cleared."
+        all_clear:      "<gold>Chat has been cleared for all players"
