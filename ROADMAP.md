@@ -21,8 +21,8 @@
 
 
 - [x] Auto messages
-- [ ] Announcement / Warning / Broadcast
-- [ ] Connect / Disconnect messages
+- [x] Announcement / Warning / Broadcast
+- [x] Connect / Disconnect messages
 - [ ] Custom rules
 - [ ] Death messages
 

@@ -20,3 +20,15 @@ commands:
     clear:
         description: Clears chat
         usage: /clear
+
+    announcement:
+        description: Sends announcement to all players.
+        usage: /announcement <message>
+
+    warning:
+        description: Sends warning to all players.
+        usage: /warning <message>
+
+    broadcast:
+        description: Sends broadcast message to all players.
+        usage: /broadcast <message>

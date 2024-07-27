@@ -1,11 +1,28 @@
 
 # Enhanced Chat - Auto messages file
 
-EnhancedChat:
-
-    time: 300
-
+OnJoin:
     enabled: true           # [ true / false ]
+
+    # Auto messages supports: (Kyori Adventure Formats & PlaceholderAPI)
+    for_player_message:
+        - "--- --- --- --- --- --- ---"
+        - " <green>Hi, <gold>%player_name%</gold>"
+        - "--- --- --- --- --- --- ---"
+
+    for_all_message:
+        - "<green>[+]</green> %player_name%"
+
+OnDisconnect:
+    enabled: true           # [ true / false ]
+
+    # Auto messages supports: (Kyori Adventure Formats & PlaceholderAPI)
+    for_all_message:
+        - "<red>[-]</red> %player_name%"
+
+AutoMessages:
+    enabled: true           # [ true / false ]
+    time: 300
 
     messages:
         message1:

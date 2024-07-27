@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class AutoMessageTask implements Runnable{
 
-    private EnhancedChat enhancedChat;
+    private final EnhancedChat enhancedChat;
     private int messageIndex = 0;
 
     public AutoMessageTask(EnhancedChat plugin) {
@@ -24,15 +24,15 @@ public class AutoMessageTask implements Runnable{
     @Override
     public void run() {
         FileConfiguration autoMessages = enhancedChat.getAutoMessagesFile();
-        Set<String> keys = autoMessages.getConfigurationSection("EnhancedChat.messages").getKeys(false);
+        Set<String> keys = autoMessages.getConfigurationSection("AutoMessages.messages").getKeys(false);
 
         if (keys.isEmpty()) return;
 
         String[] messagesKey = keys.toArray(new String[0]);
         String currentKey = messagesKey[messageIndex];
 
-        if (autoMessages.getBoolean("EnhancedChat.messages." + currentKey + ".enabled")) {
-            List<String> lines = autoMessages.getStringList("EnhancedChat.messages." + currentKey + ".message");
+        if (autoMessages.getBoolean("AutoMessages.messages." + currentKey + ".enabled")) {
+            List<String> lines = autoMessages.getStringList("AutoMessages.messages." + currentKey + ".message");
 
                 for (String line : lines) {
 

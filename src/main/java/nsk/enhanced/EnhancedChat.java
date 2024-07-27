@@ -1,9 +1,12 @@
 package nsk.enhanced;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import nsk.enhanced.Events.Commands.AnnouncementsCommand;
+import nsk.enhanced.Events.Commands.ClearChatCommand;
 import nsk.enhanced.Events.Commands.PrivateMessageCommand;
 import nsk.enhanced.Events.OnPlayerChat.LOW.OnPlayerChatEvent_LOW;
 import nsk.enhanced.Events.OnPlayerChat.LOWEST.OnPlayerChatEvent_LOWEST;
@@ -53,6 +56,9 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
 
     private File autoMessagesFile;
     private FileConfiguration autoMessages;
+
+    private File announcementsFile;
+    private FileConfiguration announcements;
 
     private SessionFactory sessionFactory;
 
@@ -120,6 +126,38 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
             enhancedLogger.fine("Command 'msg' registered.");
         } else {
             enhancedLogger.severe("Command 'msg' is not registered.");
+        }
+
+        PluginCommand clear = this.getCommand("clear");
+        if (clear != null) {
+            clear.setExecutor(new ClearChatCommand());
+            enhancedLogger.fine("Command 'clear' registered.");
+        } else {
+            enhancedLogger.severe("Command 'clear' is not registered.");
+        }
+
+        PluginCommand announcement = this.getCommand("announcement");
+        if (announcement != null) {
+            announcement.setExecutor(new AnnouncementsCommand());
+            enhancedLogger.fine("Command 'announcement' registered.");
+        } else {
+            enhancedLogger.severe("Command 'announcement' is not registered.");
+        }
+
+        PluginCommand warning = this.getCommand("warning");
+        if (warning != null) {
+            warning.setExecutor(new AnnouncementsCommand());
+            enhancedLogger.fine("Command 'warning' registered.");
+        } else {
+            enhancedLogger.severe("Command 'warning' is not registered.");
+        }
+
+        PluginCommand broadcast = this.getCommand("broadcast");
+        if (broadcast != null) {
+            broadcast.setExecutor(new AnnouncementsCommand());
+            enhancedLogger.fine("Command 'broadcast' registered.");
+        } else {
+            enhancedLogger.severe("Command 'broadcast' is not registered.");
         }
 
         getServer().getPluginManager().registerEvents(this, this);
@@ -199,6 +237,20 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
     }
     public FileConfiguration getAutoMessagesFile() {
         return autoMessages;
+    }
+
+    private void loadAnnouncements() {
+        enhancedLogger.warning("Loading announcements...");
+        announcementsFile = new File(getDataFolder(), "announcements.yml");
+        if (!announcementsFile.exists()) {
+            announcementsFile.getParentFile().mkdirs();
+            saveResource("announcements.yml", false);
+        }
+
+        announcements = YamlConfiguration.loadConfiguration(announcementsFile);
+    }
+    public FileConfiguration getAnnouncementsFile() {
+        return announcements;
     }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
@@ -300,6 +352,35 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
         UUID uuid = player.getUniqueId();
 
         addCharacter( new Character(uuid,0));
+
+        if (autoMessages.getBoolean("OnJoin.enabled")) {
+            List<String> lines = autoMessages.getStringList("OnJoin.for_all_message" );
+
+            for (String line : lines) {
+
+                for (Player p : getServer().getOnlinePlayers()) {
+
+                    if (!player.equals(p)) {
+                        String text = PlaceholderAPI.setPlaceholders(p, line);
+                        Component l = MiniMessage.miniMessage().deserialize(text);
+
+                        p.sendMessage(l);
+                    } else {
+
+                        List<String> Plines = autoMessages.getStringList("OnJoin.for_player_message" );
+
+                        for (String pline : Plines) {
+                            String text = PlaceholderAPI.setPlaceholders(p, line);
+                            Component l = MiniMessage.miniMessage().deserialize(text);
+
+                            player.sendMessage(l);
+                        }
+                    }
+
+
+                }
+            }
+        }
     }
 
     public void addCharacter(Character character) {
@@ -321,6 +402,23 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
         if (character != null) {
             removeCharacter(character);
         }
+
+        if (autoMessages.getBoolean("OnDisconnect.enabled")) {
+            List<String> lines = autoMessages.getStringList("OnDisconnect.for_all_message" );
+
+            for (String line : lines) {
+
+                for (Player p : getServer().getOnlinePlayers()) {
+
+                    String text = PlaceholderAPI.setPlaceholders(p, line);
+                    Component l = MiniMessage.miniMessage().deserialize(text);
+
+                    p.sendMessage(l);
+
+                }
+            }
+        }
+
     }
 
     public void removeCharacter(Character character) {

@@ -1,0 +1,21 @@
+
+# Enhanced Chat - Translations File
+
+Type:
+
+    # Announcements supports: (Kyori Adventure Formats & PlaceholderAPI)
+
+    Announcement:
+        - "<red>[#####] <bold><gold>Announcement</gold></bold> [#####]"
+        - "<green><message>"
+        - "<red>[#####] <bold><gold>Announcement</gold></bold> [#####]"
+
+    Warning:
+        - "<yellow>[#####] <bold><gold>Warning</gold></bold> [#####]"
+        - "<green><message>"
+        - "<yellow>[#####] <bold><gold>Warning</gold></bold> [#####]"
+
+    Broadcast:
+        - "<aqua>[#####] <bold><blue>Broadcast</blue></bold> [#####]"
+        - "<green><message>"
+        - "<aqua>[#####] <bold><blue>Broadcast</blue></bold> [#####]"
