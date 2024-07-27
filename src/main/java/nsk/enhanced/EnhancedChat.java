@@ -136,6 +136,14 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
             enhancedLogger.severe("Command 'clear' is not registered.");
         }
 
+        PluginCommand rules = this.getCommand("rules");
+        if (rules != null) {
+            rules.setExecutor(this);
+            enhancedLogger.fine("Command 'rules' registered.");
+        } else {
+            enhancedLogger.severe("Command 'rules' is not registered.");
+        }
+
         PluginCommand announcement = this.getCommand("announcement");
         if (announcement != null) {
             announcement.setExecutor(new AnnouncementsCommand());
@@ -648,7 +656,29 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
                     sender.sendMessage(help2);
                     return true;
             }
+
             return true;
+
+        }
+
+        if (command.getName().equalsIgnoreCase("rules")){
+
+            if (sender instanceof Player) {
+                Player player = (Player) sender;
+
+                List<String> lines = translations.getStringList("EnhancedChat.rules" );
+
+                for (String line : lines) {
+
+                    String text = PlaceholderAPI.setPlaceholders(player, line);
+                    Component l = MiniMessage.miniMessage().deserialize(text);
+
+                    player.sendMessage(l);
+                }
+            } else {
+                enhancedLogger.info(sender + " just tried to use Player's command '/rules'");
+            }
+
         }
 
         return false;

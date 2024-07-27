@@ -23,7 +23,7 @@
 - [x] Auto messages
 - [x] Announcement / Warning / Broadcast
 - [x] Connect / Disconnect messages
-- [ ] Custom rules
+- [x] Custom rules
 - [ ] Death messages
 
 

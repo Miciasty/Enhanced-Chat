@@ -21,6 +21,10 @@ commands:
         description: Clears chat
         usage: /clear
 
+    rules:
+        description: Server rules
+        usage: /rules
+
     announcement:
         description: Sends announcement to all players.
         usage: /announcement <message>

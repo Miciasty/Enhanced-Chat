@@ -32,7 +32,7 @@ EnhancedChat:
         #   Private message constructor!
         #   Use word '<sender>' to display sender name
         #   use word '<target>' to display target name
-        private:    "(☁) [<sender> -> <target>]: "
+        private:        "(☁) [<sender> -> <target>]: "
 
     alerts:
 
@@ -46,3 +46,9 @@ EnhancedChat:
         blocked:        "<gold>This command is blocked."
         player_clear:   "<gold>Chat has been cleared."
         all_clear:      "<gold>Chat has been cleared for all players"
+
+    rules:
+        - "Rules:"
+        - "..."
+        - "..."
+        - "Before use, read the leaflet and consult your doctor or pharmacist."
