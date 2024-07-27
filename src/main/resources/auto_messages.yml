@@ -1,0 +1,27 @@
+
+# Enhanced Chat - Auto messages file
+
+EnhancedChat:
+
+    time: 300
+
+    enabled: true           # [ true / false ]
+
+    messages:
+        message1:
+            enabled: true   # [ true / false ]
+
+            # Auto messages supports: (Kyori Adventure Formats & PlaceholderAPI)
+            message:
+                - "--- --- --- --- --- --- ---"
+                - " <green>Hi, <gold>%player_name%</gold>"
+                - "--- --- --- --- --- --- ---"
+
+        message2:
+            enabled: true   # [ true / false ]
+
+            # Auto messages supports: (Kyori Adventure Formats & PlaceholderAPI)
+            message:
+                - "--- --- --- --- --- --- ---"
+                - " <green>Click to join our: <aqua><click:open_url:https://discord.com/>Discord server</click></aqua>"
+                - "--- --- --- --- --- --- ---"

@@ -12,6 +12,7 @@ import nsk.enhanced.Player.Character;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.PluginInstance;
 import nsk.enhanced.Tags.Annotations;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -50,6 +51,9 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
     private File blacklistFile;
     private FileConfiguration blacklist;
 
+    private File autoMessagesFile;
+    private FileConfiguration autoMessages;
+
     private SessionFactory sessionFactory;
 
     private boolean devmode = false;
@@ -70,6 +74,12 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
         loadConfiguration();
         loadTranslations();
         loadBlacklist();
+        loadAutoMessages();
+
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
+            enhancedLogger.warning("Could not find PlaceholderAPI! This plugin is required.");
+            getServer().getPluginManager().disablePlugin(this);
+        }
 
         // configureHibernate();
 
@@ -123,6 +133,9 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
+
+    // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
+
     private void loadConfiguration() {
         enhancedLogger.warning("Loading configuration...");
         configFile = new File(getDataFolder(), "config.yml");
@@ -172,6 +185,20 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
     }
     public FileConfiguration getBlacklistFile() {
         return blacklist;
+    }
+
+    private void loadAutoMessages() {
+        enhancedLogger.warning("Loading auto messages...");
+        autoMessagesFile = new File(getDataFolder(), "auto_messages.yml");
+        if (!autoMessagesFile.exists()) {
+            autoMessagesFile.getParentFile().mkdirs();
+            saveResource("auto_messages.yml", false);
+        }
+
+        autoMessages = YamlConfiguration.loadConfiguration(autoMessagesFile);
+    }
+    public FileConfiguration getAutoMessagesFile() {
+        return autoMessages;
     }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //

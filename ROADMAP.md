@@ -43,7 +43,8 @@
 - [ ] Hide commands
 
 ### Support:
-- [x] Kyori Adventure Support
+- [x] PlaceholderAPI
+- [x] Kyori Adventure MiniMessages
   - HEX colors
   - Gradient
   - Transition gradient [ Horizontal \ Vertical ]

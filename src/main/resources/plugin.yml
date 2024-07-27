@@ -3,6 +3,8 @@ version: '${project.version}'
 main: nsk.enhancedchat.EnhancedChat
 api-version: '1.20'
 
+depend: [PlaceholderAPI]
+
 author: .n.u
 prefix: Enhanced Chat
 
