@@ -20,7 +20,7 @@
 - [ ] Chat color
 
 
-- [ ] Auto messages
+- [x] Auto messages
 - [ ] Announcement / Warning / Broadcast
 - [ ] Connect / Disconnect messages
 - [ ] Custom rules
