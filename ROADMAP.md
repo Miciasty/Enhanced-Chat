@@ -4,7 +4,7 @@
 ## Planned features:
 
 ### General:
-- [x] Anti Advertising
+- [x] Anti Advertising - to improve
 - [x] Anti Bot
 - [x] Anti Cap
 - [x] Anti Flood
@@ -17,7 +17,7 @@
 
 
 - [x] Chat clear
-- [ ] Chat color
+- [x] Chat color - well it works but only for Kyori Formats
 
 
 - [x] Auto messages

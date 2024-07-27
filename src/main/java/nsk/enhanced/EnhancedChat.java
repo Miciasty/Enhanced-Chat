@@ -607,7 +607,7 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
             }
 
             if (!sender.isOp()) {
-                Component message = MiniMessage.miniMessage().deserialize(translations.getString("EnhancedOres.messages.permissionDenied", "<error>'permissionDenied' not found!"),
+                Component message = MiniMessage.miniMessage().deserialize(translations.getString("EnhancedChat.messages.permissionDenied", "<error>'permissionDenied' not found!"),
                         Placeholder.styling("error", TextColor.fromHexString( Annotations.getTag("error") )),
                         Placeholder.styling("warning", TextColor.fromHexString( Annotations.getTag("warning") )),
                         Placeholder.styling("success", TextColor.fromHexString( Annotations.getTag("success") )),
@@ -617,6 +617,34 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
             }
 
             switch (args[0].toLowerCase()) {
+
+                case "character":
+
+                    if (devmode) {
+
+                        if (args.length == 2) {
+                            Player player = getServer().getPlayer(args[1].toLowerCase());
+
+                            if (player != null) {
+                                Character character = getCharacter(player.getUniqueId());
+                                sender.sendMessage(MiniMessage.miniMessage().deserialize(character.toString()));
+                            }
+                        } else {
+
+                            if (sender instanceof Player) {
+                                Player player = (Player) sender;
+                                Character character = getCharacter(player.getUniqueId());
+
+                                player.sendMessage(MiniMessage.miniMessage().deserialize(character.toString()));
+                            } else {
+                                sender.sendMessage("You must be a player to use this command.");
+                            }
+
+                        }
+
+                    }
+
+                    break;
 
                 case "devmode":
 
@@ -630,7 +658,7 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
                         dev = "is now enabled.";
                     }
 
-                    Component status = MiniMessage.miniMessage().deserialize(("<gradient:#b28724:#ffc234>[Enhanced Ores]</gradient> <#ffe099>" + dev),
+                    Component status = MiniMessage.miniMessage().deserialize(("<gradient:#b28724:#ffc234>[Enhanced Chat]</gradient> <#ffe099>" + dev),
                             Placeholder.styling("error", TextColor.fromHexString( Annotations.getTag("error") )),
                             Placeholder.styling("warning", TextColor.fromHexString( Annotations.getTag("warning") )),
                             Placeholder.styling("success", TextColor.fromHexString( Annotations.getTag("success") )),
@@ -650,7 +678,7 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
                 case "reload":
                     reloadConfiguration();
 
-                    Component reload = MiniMessage.miniMessage().deserialize(translations.getString("EnhancedOres.messages.configReloadSuccess", "<error>'configReloadSuccess' not found!"),
+                    Component reload = MiniMessage.miniMessage().deserialize(translations.getString("EnhancedChat.messages.configReloadSuccess", "<error>'configReloadSuccess' not found!"),
                             Placeholder.styling("error", TextColor.fromHexString( Annotations.getTag("error") )),
                             Placeholder.styling("warning", TextColor.fromHexString( Annotations.getTag("warning") )),
                             Placeholder.styling("success", TextColor.fromHexString( Annotations.getTag("success") )),

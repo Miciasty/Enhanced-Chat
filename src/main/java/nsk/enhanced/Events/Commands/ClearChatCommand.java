@@ -10,9 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class ClearChatCommand implements CommandExecutor {
 
     private final EnhancedChat plugin = PluginInstance.getInstance();
@@ -22,19 +19,27 @@ public class ClearChatCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (command.getName().equalsIgnoreCase("clear")) {
+        try {
+            if (command.getName().equalsIgnoreCase("clear")) {
 
-            if (sender.isOp() && args[0].equalsIgnoreCase("all")) {
-                clearChat();
-            } else if (sender instanceof Player) {
-                Player player = (Player) sender;
-                clearChat(player);
+                if (args.length > 0 && args[0].equalsIgnoreCase("all")) {
+                    if ( sender.isOp() ) {
+                        clearChat();
+                    }
+                } else if (sender instanceof Player) {
+                    Player player = (Player) sender;
+                    clearChat(player);
 
-                String template = translations.getString("EnhancedChat.commands.player_clear", "<gold>Chat has been cleared.");
-                player.sendMessage(MiniMessage.miniMessage().deserialize(template));
+                    String template = translations.getString("EnhancedChat.commands.player_clear", "<gold>Chat has been cleared.");
+                    player.sendMessage(MiniMessage.miniMessage().deserialize(template));
+                } else {
+                    sender.sendMessage("This command can only be executed by a player.");
+                }
+
+                return true;
             }
-
-            return true;
+        } catch (Exception e) {
+            plugin.getEnhancedLogger().severe(e.getMessage());
         }
 
         return false;

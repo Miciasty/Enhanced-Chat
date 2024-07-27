@@ -187,6 +187,12 @@ public class Character {
         double percentage = (double) totalWeight / MAX_WEIGHT;
 
         this.threatLevel = (int) Math.round(percentage * 4);
+
+        if (threatLevel >= 4) {
+            Player player = Bukkit.getPlayer(uuid);
+
+            Bukkit.getScheduler().runTask(PluginInstance.getInstance(), () -> player.kickPlayer("You have been kicked due to high threat level."));
+        }
     }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
@@ -207,5 +213,22 @@ public class Character {
 
     public boolean isMuted() {
         return System.currentTimeMillis() < muteUntil;
+    }
+
+    @Override
+    public String toString() {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("<green>Character of: <gold>").append(Bukkit.getPlayer(uuid).getName()).append("</gold>\n");
+        sb.append("UUID: <aqua>").append(uuid.toString()).append("</aqua>\n");
+        sb.append("Threat level: <red>").append(threatLevel).append("</red>\n");
+        sb.append("IsMuted: <red>").append(isMuted()).append("</red>\n");
+        sb.append("Warnings: \n");
+        for (Warning warning : warnings) {
+            sb.append("\t<gold>").append(warning.getCode()).append("</gold> weight: <gold>").append(warning.getWeight()).append("</gold>\n");
+        }
+
+        return sb.toString();
     }
 }

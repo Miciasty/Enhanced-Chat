@@ -29,7 +29,7 @@ public class OnPlayerChatEvent_LOWEST implements Listener {
     // --- --- --- --- --- //
 
     private final boolean AntiBot = config.getBoolean("Chat.Listener.AntiBot.enabled");
-    private final String AntiAdvertising = config.getString("Chat.Listener.AntiAdvertising");
+    private final String AntiAdvertising = "Chat.Listener.AntiAdvertising";
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
@@ -61,11 +61,18 @@ public class OnPlayerChatEvent_LOWEST implements Listener {
 
         // --- --- --- --- Blacklisted --- --- --- --- //
         if (config.getBoolean("Chat.Listener.Blacklist.enabled")) {
-            List<String> blacklist = config.getStringList("Words");
+            List<String> blacklist = this.blacklist.getStringList("Words");
             String message = event.getMessage().toLowerCase();
 
+            enhancedLogger.info("Blacklist test");
+
             for (String word : blacklist) {
+
+                enhancedLogger.info("Blacklist: " + word);
+
                 if (message.contains(word.toLowerCase())) {
+
+                    enhancedLogger.severe("Found blacklisted word: " + word);
 
                     int weight = config.getInt("Chat.Listener.Blacklist.Warning.Weight", 1);
                     character.addWarning(new Warning("blacklist", weight));
@@ -114,14 +121,24 @@ public class OnPlayerChatEvent_LOWEST implements Listener {
 
     public boolean isSafeLink(String message) {
         List<String> safeDomains = config.getStringList(AntiAdvertising + ".safe_domains");
-        String urlPattern = "((http|https|ftp)://)?(www\\.)?([a-zA-Z0-9\\-\\.]+)\\.[a-zA-Z]{2,}(/\\S*)?";
+        String urlPattern = "((http|https|ftp)://)?(www\\.)?([a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,})(/\\S*)?";
         Pattern pattern = Pattern.compile(urlPattern);
         Matcher matcher = pattern.matcher(message);
 
         while (matcher.find()) {
-            String domain = matcher.group(3);
-            if (safeDomains.contains(domain.toLowerCase())) {
-                return true;
+            String domain = matcher.group(4);
+
+            if (domain != null) {
+
+                enhancedLogger.info("Domain: " + domain);
+
+                for (String safeDomain : safeDomains) {
+                    if (domain.equalsIgnoreCase(safeDomain)) {
+                        enhancedLogger.info("Safe Domain: " + domain);
+                        return true;
+                    }
+                }
+
             }
         }
         return false;
