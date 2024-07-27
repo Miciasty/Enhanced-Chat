@@ -46,6 +46,9 @@ EnhancedChat:
         blocked:        "<gold>This command is blocked."
         player_clear:   "<gold>Chat has been cleared."
         all_clear:      "<gold>Chat has been cleared for all players"
+        ooc:            "<green>[World chat] <gray>is now enabled."
+        looc:           "<aqua>[Local chat] <gray>is now enabled."
+        alreadyActive:  "<gold>You already have this chat active."
 
     rules:
         - "Rules:"

@@ -39,7 +39,7 @@ Chat:
 
         # Local chat - Restrict chat to range
         Local:
-            enable: true    # [ true / false ]
+            enabled: true   # [ true / false ]
             range: 15       # Range in blocks
 
         # Private chat - Enables private chat [WARNING! Private chat is not under surveillance.]

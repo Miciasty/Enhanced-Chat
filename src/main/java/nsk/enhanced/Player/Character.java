@@ -23,7 +23,7 @@ public class Character {
     // --- --- --- --- --- --- --- //
 
     private UUID uuid;
-    private int chatMode;
+    private boolean isLocal;
 
     private boolean isBot;
 
@@ -34,9 +34,9 @@ public class Character {
     private int threatLevel;
     private final int MAX_WEIGHT = PluginInstance.getInstance().getConfigFile().getInt("Security.max_weight", 18);
 
-    public Character(UUID uuid, int chatMode) {
+    public Character(UUID uuid, boolean isLocal) {
         this.setUUID(uuid);
-        this.setChatMode(chatMode);
+        this.setLocal(isLocal);
         this.threatLevel = 0;
 
         this.isBot = true;
@@ -47,8 +47,8 @@ public class Character {
     private void setUUID(UUID uuid) {
         this.uuid = uuid;
     }
-    public void setChatMode(int chatMode) {
-        this.chatMode = chatMode;
+    public void setLocal(boolean local) {
+        this.isLocal = local;
     }
 
     public void setBot(boolean bot) {
@@ -60,8 +60,8 @@ public class Character {
     public UUID getUUID() {
         return uuid;
     }
-    public int getChatMode() {
-        return chatMode;
+    public boolean isLocal() {
+        return isLocal;
     }
 
     public boolean isBot() {

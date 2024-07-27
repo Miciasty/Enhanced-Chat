@@ -4,11 +4,9 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import nsk.enhanced.EnhancedChat;
-import nsk.enhanced.System.PluginInstance;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Set;
 

@@ -1,5 +1,8 @@
 package nsk.enhanced.Events.OnPlayerChat.LOW;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import nsk.enhanced.Player.Character;
 import nsk.enhanced.System.Alerts.Warning;
 import nsk.enhanced.System.EnhancedLogger;
@@ -24,13 +27,13 @@ public class OnPlayerChatEvent_LOW implements Listener {
     private final FileConfiguration config = PluginInstance.getInstance().getConfigFile();
     private final FileConfiguration translations = PluginInstance.getInstance().getTranslationsFile();
 
-    private final boolean WorldChat = config.getBoolean("Chat.Type.World");
-    private final boolean LocalChat = config.getBoolean("Chat.Type.Local");
-    private final String PrivateChat = "Chat.Type.Private";
+    private final boolean WorldChat     = config.getBoolean("Chat.Type.World");
+    private final String LocalChat      = "Chat.Type.Local";
+    private final String PrivateChat    = "Chat.Type.Private";
 
-    private final String AntiSpam = "Chat.Listener.AntiSpam";
-    private final String AntiFlood = "Chat.Listener.AntiFlood";
-    private boolean AntiCap = config.getBoolean("Chat.Listener.AntiCap.enabled");
+    private final String AntiSpam       = "Chat.Listener.AntiSpam";
+    private final String AntiFlood      = "Chat.Listener.AntiFlood";
+    private boolean AntiCap             = config.getBoolean("Chat.Listener.AntiCap.enabled");
 
     private final List<Character> characters = PluginInstance.getInstance().getCharacters();
 
@@ -45,7 +48,7 @@ public class OnPlayerChatEvent_LOW implements Listener {
 
         // --- --- --- --- Character --- --- --- --- //
         if (character == null) {
-            character = new Character(uuid,0);
+            character = new Character(uuid,false);
             PluginInstance.getInstance().addCharacter( character );
         }
 
@@ -90,19 +93,26 @@ public class OnPlayerChatEvent_LOW implements Listener {
             recipients.removeIf(p -> !p.getWorld().equals(player.getWorld()));
 
             String message = event.getMessage();
-            enhancedLogger.info("<green>[World]</green> " + player.getName() + "<reset>: " + message);
+            Component formattedMessage = MiniMessage.miniMessage().deserialize("<green>[World]</green> " + player.getName() + "<reset>: " + message);
+            String messageString = LegacyComponentSerializer.legacySection().serialize(formattedMessage);
 
+            event.setFormat(messageString);
         }
 
         // --- --- --- --- Local Chat --- --- --- --- //
-        if (config.getBoolean(LocalChat + ".enable")) {
+        if (config.getBoolean(LocalChat + ".enabled") && character.isLocal()) {
+            enhancedLogger.info("Local chat active.");
             Set<Player> recipients = event.getRecipients();
             double range = config.getDouble(LocalChat + ".range");
 
-            event.getRecipients().removeIf(p -> !p.getWorld().equals(player.getWorld()) || p.getLocation().distance(player.getLocation()) > range);
+            recipients.removeIf(p -> !p.getWorld().equals(player.getWorld()) || p.getLocation().distance(player.getLocation()) > range);
 
             String message = event.getMessage();
-            enhancedLogger.info("<aqua>[Local]</aqua> " + player.getName() + "<reset>: " + message);
+            Component formattedMessage = MiniMessage.miniMessage().deserialize("<aqua>[Local]</aqua> " + player.getName() + "<reset>: " + message);
+
+            String messageString = LegacyComponentSerializer.legacySection().serialize(formattedMessage);
+
+            event.setFormat(messageString);
 
         }
 

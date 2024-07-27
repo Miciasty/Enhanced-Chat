@@ -1,6 +1,6 @@
 name: EnhancedChat
 version: '${project.version}'
-main: nsk.enhancedchat.EnhancedChat
+main: nsk.enhanced.EnhancedChat
 api-version: '1.20'
 
 depend: [PlaceholderAPI]
@@ -24,6 +24,16 @@ commands:
     rules:
         description: Server rules
         usage: /rules
+
+    ooc:
+        description: Changes your chat to [World]
+        aliases: [global]
+        usage: /ooc
+
+    looc:
+        description: Changes your chat to [Local]
+        aliases: [local]
+        usage: /looc
 
     announcement:
         description: Sends announcement to all players.

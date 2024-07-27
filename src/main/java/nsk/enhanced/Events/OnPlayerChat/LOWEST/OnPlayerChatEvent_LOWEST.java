@@ -42,7 +42,7 @@ public class OnPlayerChatEvent_LOWEST implements Listener {
 
         // --- --- --- --- Character --- --- --- --- //
         if (character == null) {
-            character = new Character(uuid,0);
+            character = new Character(uuid,false);
             PluginInstance.getInstance().addCharacter( character );
         }
 
