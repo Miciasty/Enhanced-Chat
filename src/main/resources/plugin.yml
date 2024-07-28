@@ -25,15 +25,10 @@ commands:
         description: Server rules
         usage: /rules
 
-    ooc:
+    chat:
         description: Changes your chat to [World]
-        aliases: [global]
-        usage: /ooc
-
-    looc:
-        description: Changes your chat to [Local]
-        aliases: [local]
-        usage: /looc
+        aliases: [chat]
+        usage: /chat <world/local>
 
     announcement:
         description: Sends announcement to all players.

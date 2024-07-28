@@ -604,6 +604,63 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
         return devmode;
     }
 
+    private void changeChat(Player player, String type) {
+        Character character = getCharacter(player.getUniqueId());
+
+        if (character != null) {
+
+            switch (type) {
+
+                case "world":
+                    character.setLocal(false);
+
+                    String w = PlaceholderAPI.setPlaceholders(player, translations.getString("EnhancedOres.messages.ooc", "<green>[World chat] <gray>is now enabled."));
+                    Component w2 = MiniMessage.miniMessage().deserialize(w);
+                    player.sendMessage(w2);
+                    break;
+
+                case "local":
+                    character.setLocal(true);
+
+                    String l = PlaceholderAPI.setPlaceholders(player, translations.getString("EnhancedOres.messages.ooc", "<green>[World chat] <gray>is now enabled."));
+                    Component l2 = MiniMessage.miniMessage().deserialize(l);
+                    player.sendMessage(l2);
+                    break;
+
+                default:
+                    if (character.isLocal()) {
+                        character.setLocal(false);
+
+                        String w3 = PlaceholderAPI.setPlaceholders(player, translations.getString("EnhancedOres.messages.ooc", "<green>[World chat] <gray>is now enabled."));
+                        Component w4 = MiniMessage.miniMessage().deserialize(w3);
+                        player.sendMessage(w4);
+                    } else {
+                        String l3 = PlaceholderAPI.setPlaceholders(player, translations.getString("EnhancedOres.messages.ooc", "<green>[World chat] <gray>is now enabled."));
+                        Component l4 = MiniMessage.miniMessage().deserialize(l3);
+                        player.sendMessage(l4);
+                    }
+            }
+        }
+    }
+
+    private void changeChat(Player player) {
+        Character character = getCharacter(player.getUniqueId());
+
+        if (character != null) {
+            if (character.isLocal()) {
+                character.setLocal(false);
+
+                String w3 = PlaceholderAPI.setPlaceholders(player, translations.getString("EnhancedOres.messages.ooc", "<green>[World chat] <gray>is now enabled."));
+                Component w4 = MiniMessage.miniMessage().deserialize(w3);
+                player.sendMessage(w4);
+            } else {
+                String l3 = PlaceholderAPI.setPlaceholders(player, translations.getString("EnhancedOres.messages.ooc", "<green>[World chat] <gray>is now enabled."));
+                Component l4 = MiniMessage.miniMessage().deserialize(l3);
+                player.sendMessage(l4);
+            }
+        }
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("ec")) {
@@ -727,62 +784,34 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
 
         }
 
-        if (command.getName().equalsIgnoreCase("ooc") || command.getName().equalsIgnoreCase("global")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                Character character = getCharacter(player.getUniqueId());
+        if (command.getName().equalsIgnoreCase("chat")) {
 
-                try {
-                    if (character.isLocal()) {
-
-                        character.setLocal(false);
-
-                        String text = PlaceholderAPI.setPlaceholders(player, translations.getString("EnhancedOres.messages.ooc", "<green>[World chat] <gray>is now enabled."));
-                        Component message = MiniMessage.miniMessage().deserialize(text);
-                        player.sendMessage(message);
-
-                    } else {
-                        String text = PlaceholderAPI.setPlaceholders(player, translations.getString("EnhancedOres.messages.alreadyActive", "<gold>You already have this chat active."));
-                        Component message = MiniMessage.miniMessage().deserialize(text);
-                        player.sendMessage(message);
-                    }
-                } catch (Exception e) {
-                    enhancedLogger.severe("Player does not have a Character Class.");
-                    addCharacter(new Character(player.getUniqueId(), false));
-                }
-            } else {
-                sender.sendMessage("You must be a player to use this command.");
+            if (args.length == 0) {
+                Component help = MiniMessage.miniMessage().deserialize(getHelp());
+                sender.sendMessage(help);
+                return false;
             }
 
-            return true;
+            if (!(sender instanceof Player)) {
+                sender.sendMessage(MiniMessage.miniMessage().deserialize("<red>You are not a player."));
+                return true;
+            }
 
-        }
+            Player player = (Player) sender;
 
-        if (command.getName().equalsIgnoreCase("looc") || command.getName().equalsIgnoreCase("local")) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                Character character = getCharacter(player.getUniqueId());
+            switch (args[0].toLowerCase()) {
 
-                try {
-                    if (!character.isLocal()) {
+                case "world":
+                    changeChat(player, "world");
+                    break;
 
-                        character.setLocal(true);
+                case "local":
+                    changeChat(player, "local");
+                    break;
 
-                        String text = PlaceholderAPI.setPlaceholders(player, translations.getString("EnhancedOres.messages.looc", "<aqua>[Local chat] <gray>is now enabled."));
-                        Component message = MiniMessage.miniMessage().deserialize(text);
-                        player.sendMessage(message);
+                default:
+                    changeChat(player);
 
-                    } else {
-                        String text = PlaceholderAPI.setPlaceholders(player, translations.getString("EnhancedOres.messages.alreadyActive", "<gold>You already have this chat active."));
-                        Component message = MiniMessage.miniMessage().deserialize(text);
-                        player.sendMessage(message);
-                    }
-                } catch (Exception e) {
-                    enhancedLogger.severe("Player does not have a Character Class.");
-                    addCharacter(new Character(player.getUniqueId(), true));
-                }
-            } else {
-                sender.sendMessage("You must be a player to use this command.");
             }
 
             return true;
@@ -795,5 +824,6 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
     public EnhancedLogger getEnhancedLogger() {
         return enhancedLogger;
     }
+
 
 }
