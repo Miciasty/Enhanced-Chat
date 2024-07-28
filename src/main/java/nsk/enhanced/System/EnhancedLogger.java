@@ -12,7 +12,7 @@ import java.util.logging.*;
 
 public class EnhancedLogger extends Logger {
 
-    private EnhancedChat plugin;
+    private final EnhancedChat plugin;
 
     public EnhancedLogger(EnhancedChat plugin) {
         super(plugin.getName(), null);

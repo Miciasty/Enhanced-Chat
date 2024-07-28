@@ -29,14 +29,16 @@ EnhancedChat:
 
     messages:
 
+        muted:                  "<gray>You are muted until: <red>"
+        configReloadSuccess:    "<success>Config reloaded successfully!"
         #   Private message constructor!
         #   Use word '<sender>' to display sender name
         #   use word '<target>' to display target name
         private:                "(☁) [<sender> -> <target>]: "
+        helpop_success:         "<green>Report with id: <red><id></red> was sent."
+        helpop_failed:          "<red>Report was not sent due to server error."
+        helpop_announce:        "<yellow><green>%player_name%</green> just sent new Report with ID:</yellow> <red><id></red>"
 
-        configReloadSuccess:    "<success>Config reloaded successfully!"
-
-        muted:          "<gray>You are muted until: <red>"
 
     alerts:
 
