@@ -37,7 +37,7 @@
 
 ### System:
 - [ ] HelpOp system
-- [ ] '@mention' & '@ping' system
+- [x] '@mention' & '@ping' system
 - [ ] Word replacer system
 - [ ] Message Surveillance System
 - [ ] Hide commands

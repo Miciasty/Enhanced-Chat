@@ -40,5 +40,5 @@ AutoMessages:
             # Auto messages supports: (Kyori Adventure Formats & PlaceholderAPI)
             message:
                 - "--- --- --- --- --- --- ---"
-                - " <green>Click to join our: <aqua><click:open_url:https://discord.com/>Discord server</click></aqua>"
+                - " <green>Click to join our: <aqua><click:open_url:'https://interia.pl/'>interia.pl</click></aqua>"
                 - "--- --- --- --- --- --- ---"

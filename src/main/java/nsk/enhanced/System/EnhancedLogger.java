@@ -66,6 +66,9 @@ public class EnhancedLogger extends Logger {
                 Component security = MiniMessage.miniMessage().deserialize("<#ff5f5f>⚠</#ff5f5f> <gradient:#6f54b4:#896ece><bold>[SECURITY BREACHED] <#ff5f5f>⚠</#ff5f5f></bold></gradient> <#bdaee4>" + message);
                 Bukkit.getConsoleSender().sendMessage(security);
 
+            } else if (level.equals(SecurityLevels.HTTP)) {
+                Component character = MiniMessage.miniMessage().deserialize("<gradient:#1f8eb2:#2dccff>[Link Validation]</gradient> <#ffe099>" + message);
+                Bukkit.getConsoleSender().sendMessage(character);
             } else {
                 Bukkit.getConsoleSender().sendMessage(casual);
             }
@@ -86,6 +89,10 @@ public class EnhancedLogger extends Logger {
 
     public void security(String message) {
         log(SecurityLevels.SECURITY, message);
+    }
+
+    public void http(String message) {
+        log(SecurityLevels.HTTP, message);
     }
 
 }

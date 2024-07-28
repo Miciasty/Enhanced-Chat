@@ -8,10 +8,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class Character {
 
@@ -110,10 +112,12 @@ public class Character {
         warnings.add(warning);
         String code = warning.getCode();
 
+        sendWarning(warning);
+
         if (warning.getLink() != null) {
-            enhancedLogger.security(Bukkit.getPlayer(uuid) + " sent potentially dangerous link: " + warning.getLink());
+            enhancedLogger.security("<red>" + Bukkit.getPlayer(uuid).getName() + "</red> sent potentially dangerous link: " + warning.getLink());
         } else {
-            enhancedLogger.character(Bukkit.getPlayer(uuid) + " received " + getAllWarningsOfCodeAsSize(code) + " " + code + " warning!");
+            enhancedLogger.character("<red>" + Bukkit.getPlayer(uuid).getName() + "</red> received " + getAllWarningsOfCodeAsSize(code) + " " + code + " warning!");
         }
 
         calculateThreatLevel();
@@ -124,26 +128,29 @@ public class Character {
         String code = warning.getCode();
 
         if (player == null) {
-
             return;
         }
 
         String template, message;
 
+        String security = "\n<gradient:#582f74:#934fc2>(<#FF890E>\uD83D\uDD25</#FF890E>>-- --- --- --<<#479CE9>☠</#479CE9>) <bold>[Secu</bold></gradient><gradient:#934fc2:#582f74><bold>rity]</bold> (<#479CE9>☠</#479CE9>>-- --- --- --<<#FF890E>\uD83D\uDD25</#FF890E>)</gradient>\n\n     ";
+        int lineSize = 48;
+
         switch (code) {
 
             case "blacklist":
                 template = translations.getString("EnhancedChat.alerts.blacklist", "<yellow>You just said the forbidden word... We will remember that!");
-                message = template;
+                message = security + autoNewLiner(template, lineSize) + "\n";
 
                 player.sendMessage(MiniMessage.miniMessage().deserialize(message));
-
+                break;
 
             case "spam":
                 int MuteDuration = config.getInt("Chat.Listener.AntiSpam.mute_duration", 20);
 
                 template = translations.getString("EnhancedChat.alerts.mute", "<red>You have been muted for <time> seconds due to spamming.");
-                message = template
+                template = autoNewLiner(template, lineSize) + "\n";
+                message = security + template
                         .replace("<time>", String.valueOf(MuteDuration));
 
                 player.sendMessage(MiniMessage.miniMessage().deserialize(message));
@@ -151,21 +158,21 @@ public class Character {
 
             case "flood":
                 template = translations.getString("EnhancedChat.alerts.flood", "<red>Hey yo! Too many same characters in 1 word.");
-                message = template;
+                message = security + autoNewLiner(template, lineSize) + "\n";
 
                 player.sendMessage(MiniMessage.miniMessage().deserialize(message));
                 break;
 
             case "ad":
                 template = translations.getString("EnhancedChat.alerts.advertisement", "<red>Hey! We don't allow advertisements here!");
-                message = template;
+                message = security + autoNewLiner(template, lineSize) + "\n";
 
                 player.sendMessage(MiniMessage.miniMessage().deserialize(message));
                 break;
 
             case "link":
                 template = translations.getString("EnhancedChat.alerts.dangerous_link", "<red>Hmm.. did you just sent some weird suspicious link???");
-                message = template;
+                message = security + autoNewLiner(template, lineSize) + "\n";
 
                 player.sendMessage(MiniMessage.miniMessage().deserialize(message));
                 break;
@@ -195,9 +202,54 @@ public class Character {
         }
     }
 
+    private String autoNewLiner(String message, int lineSize) {
+        StringBuilder result = new StringBuilder();
+        double currentLineLength = 0;
+
+        String[] words = message.split(" ");
+
+        for (String word : words) {
+            double wordLength = 0;
+
+            for (char c : word.toCharArray()) {
+                if (c == '.' || c == ',' || c == 'i' || c == 't' || c == 'f' || c == 'l' || c == ' ' || c == 'I') {
+                    wordLength += 0.5;
+                } else {
+                    wordLength++;
+                }
+            }
+
+            if (currentLineLength + wordLength > lineSize) {
+                result.append("\n     ");
+                currentLineLength = 0;
+            }
+
+            if (currentLineLength > 0) {
+                result.append(" ");
+                currentLineLength += 0.5;
+            }
+
+            result.append(word);
+            currentLineLength += wordLength;
+        }
+
+        return result.toString();
+    }
+
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
     // --- --- --- --- Anti Spam Listener --- --- --- --- //
+
+    public String getFormattedMuteTime() {
+        long currentTime = System.currentTimeMillis();
+        long remainingTime = this.muteUntil - currentTime;
+
+        long hours = TimeUnit.MILLISECONDS.toHours(remainingTime);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(remainingTime) - TimeUnit.HOURS.toMinutes(hours);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(remainingTime) - TimeUnit.HOURS.toMinutes(hours) - TimeUnit.MINUTES.toSeconds(minutes);
+
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
 
     public LinkedList<Long> getMessagesTimestamps() {
         return messagesTimestamps;

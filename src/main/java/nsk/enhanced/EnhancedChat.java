@@ -14,6 +14,7 @@ import nsk.enhanced.Events.OnPlayerCommandPreprocess.OnPlayerCommandPreprocessLO
 import nsk.enhanced.Player.Character;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.PluginInstance;
+import nsk.enhanced.System.RunnableTask.AutoMessageTask;
 import nsk.enhanced.Tags.Annotations;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -44,6 +45,7 @@ import java.util.logging.Level;
 public final class EnhancedChat extends JavaPlugin implements Listener {
 
     private EnhancedLogger enhancedLogger;
+    private AutoMessageTask autoMessageTask;
 
     private File configFile;
     private FileConfiguration config;
@@ -187,6 +189,12 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
 
         getServer().getPluginManager().registerEvents(this, this);
 
+        if (autoMessages.getBoolean("AutoMessages.enabled", true)) {
+            int interval = autoMessages.getInt("AutoMessages.time", 300) * 20;
+
+            getServer().getScheduler().runTaskTimer(this, new AutoMessageTask(this), interval, interval);
+        }
+
     }
 
     @Override
@@ -283,8 +291,8 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
     private void reloadConfiguration() {
         try {
 
-            loadConfiguration();
             loadTranslations();
+            loadConfiguration();
             loadBlacklist();
             loadAutoMessages();
             loadAnnouncements();

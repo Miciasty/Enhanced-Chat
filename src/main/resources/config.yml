@@ -51,6 +51,11 @@ Chat:
         #       - /do
         Character: false      # [ true / false ]
 
+    System:
+
+        Mention:
+            enabled:        true    # [ true / false ]
+
     Listener:
 
         AntiBot:

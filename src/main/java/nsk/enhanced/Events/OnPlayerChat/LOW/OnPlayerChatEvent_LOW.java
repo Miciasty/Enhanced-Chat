@@ -15,10 +15,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class OnPlayerChatEvent_LOW implements Listener {
 
@@ -54,7 +56,7 @@ public class OnPlayerChatEvent_LOW implements Listener {
 
         // --- --- --- --- Anti Spam --- --- --- --- //
         if (config.getBoolean(AntiSpam + ".enabled")) {
-            if (isSpam(character, player)) {
+            if (!character.isMuted() && isSpam(character, player)) {
 
                 int weight = config.getInt(AntiSpam + ".Warning.weight", 2);
                 character.addWarning(new Warning("spam", weight));
@@ -166,4 +168,5 @@ public class OnPlayerChatEvent_LOW implements Listener {
 
         return false;
     }
+
 }

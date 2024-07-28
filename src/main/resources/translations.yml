@@ -36,6 +36,8 @@ EnhancedChat:
 
         configReloadSuccess:    "<success>Config reloaded successfully!"
 
+        muted:          "<gray>You are muted until: <red>"
+
     alerts:
 
         blacklist:      "<yellow>You just said the forbidden word... We will remember that!"
