@@ -51,4 +51,24 @@ public class Report {
     }
 
     // --- --- --- --- --- --- --- //
+
+
+    @Override
+    public String toString() {
+
+        StringBuilder report = new StringBuilder();
+
+        report.append("\n\n");
+        report.append("<red>Report by: <gold>").append(getReporter().getName()).append("</gold></red>\n");
+        report.append("<red>Created at: <aqua>").append(getFormattedTimestamp()).append("</aqua></red>\n");
+        report.append("<green>Suspect: <gray>").append(getSuspect().getName()).append("</gray></green>\n");
+        report.append("<green>Message: <gray>").append(getMessage()).append("</gray></green>\n\n");
+
+        report.append("<gray>What would you like to do?</gray>");
+        report.append("<gray>- <click:run_command:'/tp ").append(getReporter().getName()).append("'><click:run_command:'/gamemode spectator'><yellow>[Teleport to reporter]</yellow></click></click>\n");
+        report.append("<gray>- <click:run_command:'/tp ").append(getSuspect().getName()).append("'><click:run_command:'/gamemode spectator'><red>[Teleport to suspect]</red></click></click>\n\n");
+
+        return report.toString();
+
+    }
 }

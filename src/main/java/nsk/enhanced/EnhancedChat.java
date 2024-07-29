@@ -13,6 +13,7 @@ import nsk.enhanced.Events.OnPlayerChat.LOWEST.OnPlayerChatEvent_LOWEST;
 import nsk.enhanced.Events.OnPlayerCommandPreprocess.OnPlayerCommandPreprocessLOWEST;
 import nsk.enhanced.Player.Character;
 import nsk.enhanced.System.EnhancedLogger;
+import nsk.enhanced.System.HelpOp.ReportManager;
 import nsk.enhanced.System.PluginInstance;
 import nsk.enhanced.System.RunnableTask.AutoMessageTask;
 import nsk.enhanced.Tags.Annotations;
@@ -46,6 +47,7 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
 
     private EnhancedLogger enhancedLogger;
     private AutoMessageTask autoMessageTask;
+    private ReportManager reportManager;
 
     private File configFile;
     private FileConfiguration config;
@@ -90,6 +92,12 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
             getServer().getPluginManager().disablePlugin(this);
         }
 
+        // --- --- --- --- --- --- --- --- --- --- //
+
+        reportManager = new ReportManager();
+
+        // --- --- --- --- --- --- --- --- --- --- //
+
         // configureHibernate();
 
         // --- --- --- --- // Events Managers & Listeners // --- --- --- --- //
@@ -115,6 +123,8 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
             enhancedLogger.severe("Registration onPlayerCommandPreprocessEvent failed! - " + e.getMessage());
         }
 
+        // --- --- --- --- --- --- --- --- --- --- //
+
         PluginCommand ec = this.getCommand("ec");
         if (ec != null) {
             ec.setExecutor(this);
@@ -123,45 +133,47 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
             enhancedLogger.severe("Command 'ec' is not registered.");
         }
 
-        PluginCommand msg = this.getCommand("msg");
-        if (msg != null) {
-            msg.setExecutor(new PrivateMessageCommand());
-            enhancedLogger.fine("Command 'msg' registered.");
-        } else {
-            enhancedLogger.severe("Command 'msg' is not registered.");
-        }
+                PluginCommand msg = this.getCommand("msg");
+                if (msg != null) {
+                    msg.setExecutor(new PrivateMessageCommand());
+                    enhancedLogger.fine("Command 'msg' registered.");
+                } else {
+                    enhancedLogger.severe("Command 'msg' is not registered.");
+                }
 
-        PluginCommand clear = this.getCommand("clear");
-        if (clear != null) {
-            clear.setExecutor(new ClearChatCommand());
-            enhancedLogger.fine("Command 'clear' registered.");
-        } else {
-            enhancedLogger.severe("Command 'clear' is not registered.");
-        }
+                PluginCommand ignore = this.getCommand("ignore");
+                if (ignore != null) {
+                    ignore.setExecutor(new PrivateMessageCommand());
+                    enhancedLogger.fine("Command 'ignore' registered.");
+                } else {
+                    enhancedLogger.severe("Command 'ignore' is not registered.");
+                }
 
-        PluginCommand rules = this.getCommand("rules");
-        if (rules != null) {
-            rules.setExecutor(this);
-            enhancedLogger.fine("Command 'rules' registered.");
-        } else {
-            enhancedLogger.severe("Command 'rules' is not registered.");
-        }
+                PluginCommand clear = this.getCommand("chatclear");
+                if (clear != null) {
+                    clear.setExecutor(new ClearChatCommand());
+                    enhancedLogger.fine("Command 'clear' registered.");
+                } else {
+                    enhancedLogger.severe("Command 'chatclear' is not registered.");
+                }
 
-        PluginCommand ooc = this.getCommand("ooc");
-        if (ooc != null) {
-            ooc.setExecutor(this);
-            enhancedLogger.fine("Command 'ooc' registered.");
-        } else {
-            enhancedLogger.severe("Command 'ooc' is not registered.");
-        }
+                PluginCommand rules = this.getCommand("rules");
+                if (rules != null) {
+                    rules.setExecutor(this);
+                    enhancedLogger.fine("Command 'rules' registered.");
+                } else {
+                    enhancedLogger.severe("Command 'rules' is not registered.");
+                }
 
-        PluginCommand looc = this.getCommand("looc");
-        if (looc != null) {
-            looc.setExecutor(this);
-            enhancedLogger.fine("Command 'looc' registered.");
-        } else {
-            enhancedLogger.severe("Command 'looc' is not registered.");
-        }
+                PluginCommand chat = this.getCommand("chat");
+                if (chat != null) {
+                    chat.setExecutor(this);
+                    enhancedLogger.fine("Command 'ooc' registered.");
+                } else {
+                    enhancedLogger.severe("Command 'chat' is not registered.");
+                }
+
+        // --- --- --- --- --- --- --- --- --- --- //
 
         PluginCommand announcement = this.getCommand("announcement");
         if (announcement != null) {
@@ -171,21 +183,23 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
             enhancedLogger.severe("Command 'announcement' is not registered.");
         }
 
-        PluginCommand warning = this.getCommand("warning");
-        if (warning != null) {
-            warning.setExecutor(new AnnouncementsCommand());
-            enhancedLogger.fine("Command 'warning' registered.");
-        } else {
-            enhancedLogger.severe("Command 'warning' is not registered.");
-        }
+                PluginCommand warning = this.getCommand("warning");
+                if (warning != null) {
+                    warning.setExecutor(new AnnouncementsCommand());
+                    enhancedLogger.fine("Command 'warning' registered.");
+                } else {
+                    enhancedLogger.severe("Command 'warning' is not registered.");
+                }
 
-        PluginCommand broadcast = this.getCommand("broadcast");
-        if (broadcast != null) {
-            broadcast.setExecutor(new AnnouncementsCommand());
-            enhancedLogger.fine("Command 'broadcast' registered.");
-        } else {
-            enhancedLogger.severe("Command 'broadcast' is not registered.");
-        }
+                PluginCommand broadcast = this.getCommand("broadcast");
+                if (broadcast != null) {
+                    broadcast.setExecutor(new AnnouncementsCommand());
+                    enhancedLogger.fine("Command 'broadcast' registered.");
+                } else {
+                    enhancedLogger.severe("Command 'broadcast' is not registered.");
+                }
+
+        // --- --- --- --- --- --- --- --- --- --- //
 
         getServer().getPluginManager().registerEvents(this, this);
 
@@ -194,6 +208,8 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
 
             getServer().getScheduler().runTaskTimer(this, new AutoMessageTask(this), interval, interval);
         }
+
+
 
     }
 
@@ -372,12 +388,18 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
 
-        Character character = getCharacter(player.getUniqueId());
-        if (character != null) {
-            character.setBot(false);
+        if (event.hasChangedPosition()) {
+
+            Player player = event.getPlayer();
+
+            Character character = getCharacter(player.getUniqueId());
+            if (character != null) {
+                character.setBot(false);
+            }
+
         }
+
     }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
@@ -663,7 +685,7 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (command.getName().equalsIgnoreCase("ec")) {
+        if (command.getName().equalsIgnoreCase("ec") || command.getName().equalsIgnoreCase("echat")) {
 
             if (args.length == 0) {
                 Component help = MiniMessage.miniMessage().deserialize(getHelp());

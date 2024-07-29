@@ -20,7 +20,7 @@ public class ClearChatCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         try {
-            if (command.getName().equalsIgnoreCase("clear")) {
+            if (command.getName().equalsIgnoreCase("chatclear")) {
 
                 if (args.length > 0 && args[0].equalsIgnoreCase("all")) {
                     if ( sender.isOp() ) {

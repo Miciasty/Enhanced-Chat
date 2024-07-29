@@ -53,6 +53,9 @@ Chat:
 
     System:
 
+        AntiPlayerReport:
+            enabled:        true    # [ true / false ]
+
         Mention:
             enabled:        true    # [ true / false ]
 

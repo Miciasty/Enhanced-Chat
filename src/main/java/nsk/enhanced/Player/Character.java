@@ -9,10 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class Character {
@@ -36,6 +33,10 @@ public class Character {
     private int threatLevel;
     private final int MAX_WEIGHT = PluginInstance.getInstance().getConfigFile().getInt("Security.max_weight", 18);
 
+    // --- --- --- --- --- --- --- //
+
+    private final Set<Player> ignoredPlayers = new HashSet<>();
+
     public Character(UUID uuid, boolean isLocal) {
         this.setUUID(uuid);
         this.setLocal(isLocal);
@@ -57,6 +58,25 @@ public class Character {
         this.isBot = bot;
     }
 
+    public boolean addIgnoredPlayer(Player player) {
+        try {
+            this.ignoredPlayers.add(player);
+            return true;
+        } catch (Exception e) {
+            enhancedLogger.severe("Failed to add ignored player <red>" + player.getName() + "</red> for <gold>" + Bukkit.getPlayer(uuid).getName() + "</gold>: " + e.getMessage());
+            return false;
+        }
+    }
+    public boolean removeIgnoredPlayer(Player player) {
+        try {
+            this.ignoredPlayers.remove(player);
+            return true;
+        } catch (Exception e) {
+            enhancedLogger.severe("Failed to remove ignored player <red>" + player.getName() + "</red> for <gold>" + Bukkit.getPlayer(uuid).getName() + "</gold>: " + e.getMessage());
+            return false;
+        }
+    }
+
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
     public UUID getUUID() {
@@ -68,6 +88,13 @@ public class Character {
 
     public boolean isBot() {
         return isBot;
+    }
+
+    public Set<Player> getIgnoredPlayers() {
+        return ignoredPlayers;
+    }
+    public boolean isIgnored(Player player) {
+        return ignoredPlayers.contains(player);
     }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //

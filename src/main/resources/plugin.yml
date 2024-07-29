@@ -11,15 +11,21 @@ prefix: Enhanced Chat
 commands:
     ec:
         description: Main command for Enhanced Chat plugin.
+        aliases: [echat]
         usage: None
 
     msg:
         description: Sends a private message to another player.
         usage: /msg <player> <message>
 
-    clear:
+    ignore:
+        description: Disables visibility for all messages of ignored Player.
+        aliases: [ignore]
+        usage: /ignore <player>
+
+    chatclear:
         description: Clears chat
-        usage: /clear
+        usage: /chatclear
 
     rules:
         description: Server rules

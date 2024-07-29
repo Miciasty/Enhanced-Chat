@@ -61,6 +61,30 @@ public class ReportManager {
         }
     }
 
+    public List<Report> getReports() {
+        return reports;
+    }
+
+    public Report getReport(int id) {
+
+        if (reports.get(id) != null) {
+            return reports.get(id);
+        } else {
+            return null;
+        }
+
+    }
+    public Report getReport(OfflinePlayer player) {
+
+        for (Report report : reports) {
+            if (report.getReporter() == player) {
+                return report;
+            }
+        }
+
+        return null;
+    }
+
     // --- --- --- --- --- --- --- //
 
     public void messageAllOperators(Report report) {

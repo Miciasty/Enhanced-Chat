@@ -3,6 +3,7 @@ package nsk.enhanced.Events.Commands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import nsk.enhanced.EnhancedChat;
+import nsk.enhanced.Player.Character;
 import nsk.enhanced.System.PluginInstance;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,13 +26,13 @@ public class PrivateMessageCommand implements CommandExecutor {
         if (command.getName().equalsIgnoreCase("msg")) {
             if (args.length < 2) {
                 sender.sendMessage("Usage: /msg <player> <message>");
-                return false;
+                return true;
             }
 
             Player target = plugin.getServer().getPlayer(args[0]);
             if (target == null || !target.isOnline()) {
                 sender.sendMessage("Player not found or is not online.");
-                return false;
+                return true;
             }
 
 
@@ -48,6 +49,42 @@ public class PrivateMessageCommand implements CommandExecutor {
             target.sendMessage(msg);
 
             return true;
+        } else if (command.getName().equalsIgnoreCase("ignore")) {
+
+            if (!(sender instanceof Player)) {
+                sender.sendMessage(MiniMessage.miniMessage().deserialize("<red>You must be a player to use this command."));
+                return true;
+            }
+
+            if (args.length < 2) {
+                sender.sendMessage("Usage: /ignore <player>");
+                return true;
+            } else {
+
+                Player target = plugin.getServer().getPlayer(args[0]);
+
+                if (target == null || !target.isOnline()) {
+                    sender.sendMessage(MiniMessage.miniMessage().deserialize("<red>Player not found or is not online."));
+                } else {
+                    Player player = (Player) sender;
+                    Character character = plugin.getCharacter(player.getUniqueId());
+
+                    String answer = "<gold>" + target.getName() + "</gold> <green>is now ignored by you.";
+
+                    if (character != null) {
+                        if (character.isIgnored(target)) {
+                            character.removeIgnoredPlayer(target);
+                            answer = "<gold>" + target.getName() + "</gold> <green>is no longer ignored by you.";
+                        } else {
+                            character.addIgnoredPlayer(target);
+                        }
+                    }
+
+                    player.sendMessage(MiniMessage.miniMessage().deserialize(answer));
+                }
+
+            }
+
         }
 
         return false;
