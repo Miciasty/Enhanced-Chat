@@ -36,6 +36,20 @@ commands:
         aliases: [chat]
         usage: /chat <world/local>
 
+
+    helpop:
+        description: Administrative tool to manage reports
+        usage: |
+            /helpop list
+            /helpop <show/remove> <id>
+
+    report:
+        description: Reports another player
+        aliases: [report]
+        usage: /report <player> <message>
+
+
+
     announcement:
         description: Sends announcement to all players.
         usage: /announcement <message>

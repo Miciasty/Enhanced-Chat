@@ -13,6 +13,7 @@ import nsk.enhanced.Events.OnPlayerChat.LOWEST.OnPlayerChatEvent_LOWEST;
 import nsk.enhanced.Events.OnPlayerCommandPreprocess.OnPlayerCommandPreprocessLOWEST;
 import nsk.enhanced.Player.Character;
 import nsk.enhanced.System.EnhancedLogger;
+import nsk.enhanced.System.HelpOp.Report;
 import nsk.enhanced.System.HelpOp.ReportManager;
 import nsk.enhanced.System.PluginInstance;
 import nsk.enhanced.System.RunnableTask.AutoMessageTask;
@@ -172,6 +173,24 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
                 } else {
                     enhancedLogger.severe("Command 'chat' is not registered.");
                 }
+
+        // --- --- --- --- --- --- --- --- --- --- //
+
+        PluginCommand report = this.getCommand("report");
+        if (report != null) {
+            report.setExecutor(this);
+            enhancedLogger.fine("Command 'report' registered.");
+        } else {
+            enhancedLogger.severe("Command 'report' is not registered.");
+        }
+
+        PluginCommand helpop = this.getCommand("helpop");
+        if (helpop != null) {
+            helpop.setExecutor(this);
+            enhancedLogger.fine("Command 'helpop' registered.");
+        } else {
+            enhancedLogger.severe("Command 'helpop' is not registered.");
+        }
 
         // --- --- --- --- --- --- --- --- --- --- //
 
@@ -837,6 +856,85 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
             }
 
             return true;
+
+        }
+
+        if (command.getName().equalsIgnoreCase("report")) {
+
+            if (args.length < 3) {
+                return false;
+            } else {
+
+                String report = translations.getString("EnhancedChat.system.not_player");
+
+                if (sender instanceof Player) {
+                    Player player = (Player) sender;
+                    Player suspect = Bukkit.getPlayer(args[1].toLowerCase());
+
+                    if (suspect != null) {
+
+                        reportManager.addReport( new Report(player, suspect, args[2] ));
+                        report = translations.getString("EnhancedChat.system.report_success");
+
+                    } else {
+                        report = translations.getString("EnhancedChat.system.report_suspect_not_found");
+                    }
+                }
+
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(report));
+
+                return true;
+            }
+        }
+
+        if (command.getName().equalsIgnoreCase("helpop") ) {
+
+            if (args.length < 1) {
+                return false;
+            } else if (!sender.isOp()) {
+                sender.sendMessage(MiniMessage.miniMessage().deserialize(translations.getString("EnhancedChat.system.permission")));
+                return true;
+            } else {
+
+                switch (args[0].toLowerCase()) {
+
+                    case "list":
+                        String list = reportManager.viewReports();
+
+                        sender.sendMessage(MiniMessage.miniMessage().deserialize(list));
+                        break;
+
+                    case "show":
+                        if (args.length == 3 && isNumeric(args[2])) {
+                            Report report = reportManager.getReport(Integer.parseInt(args[2]));
+
+                            if (report != null) {
+                                sender.sendMessage(MiniMessage.miniMessage().deserialize(report.toString()));
+                            } else {
+                                sender.sendMessage(MiniMessage.miniMessage().deserialize("<red>Report with this ID wasn't found."));
+                            }
+                        }
+                        break;
+
+                    case "remove":
+                        if (args.length == 3 && isNumeric(args[2])) {
+                            Report report = reportManager.getReport(Integer.parseInt(args[2]));
+
+                            if (report != null) {
+                                reportManager.removeReport(report);
+                                sender.sendMessage(MiniMessage.miniMessage().deserialize("<green>Report was successfully removed."));
+                            } else {
+                                sender.sendMessage(MiniMessage.miniMessage().deserialize("<red>Report with this ID wasn't found."));
+                            }
+                        }
+                        break;
+
+                    default:
+                        return false;
+
+                }
+
+            }
 
         }
 

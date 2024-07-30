@@ -39,6 +39,11 @@ EnhancedChat:
         helpop_failed:          "<red>Report was not sent due to server error."
         helpop_announce:        "<yellow><green>%player_name%</green> just sent new Report with ID:</yellow> <red><id></red>"
 
+    system:
+        permission:                 "<red>You don't have permission to use that command."
+        not_player:                 "<red>You must be a player to use this command."
+        report_success:             "<green>We have received your report! <gold>All administrators were notified."
+        report_suspect_not_found:   "<red>Suspect with that name was not found."
 
     alerts:
 
