@@ -30,13 +30,13 @@
 ### Chat type:
 - [x] World chat
 - [ ] Group chat
-- [x] "Private" chat
+- [x] Private chat
 - [x] Local chat
 - [ ] Character chat
 - [ ] **Safemode**
 
 ### System:
-- [ ] HelpOp system
+- [x] HelpOp system
 - [x] '@mention' & '@ping' system
 - [ ] Word replacer system
 - [ ] Message Surveillance System

@@ -1,7 +1,10 @@
 package nsk.enhanced.System.HelpOp;
 
+import nsk.enhanced.System.PluginInstance;
 import org.bukkit.entity.Player;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Report {
@@ -19,6 +22,8 @@ public class Report {
         this.suspect = suspect;
         this.message = message;
         this.timestamp = System.currentTimeMillis();
+
+        PluginInstance.getInstance().getReportManager().messageAllOperators(this);
     }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
@@ -43,11 +48,10 @@ public class Report {
 
     public String getFormattedTimestamp() {
 
-        long hours = TimeUnit.MILLISECONDS.toHours(this.timestamp);
-        long minutes = TimeUnit.MILLISECONDS.toMinutes(this.timestamp) - TimeUnit.HOURS.toMinutes(hours);
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(this.timestamp) - TimeUnit.HOURS.toMinutes(hours) - TimeUnit.MINUTES.toSeconds(minutes);
+        Date date = new Date(timestamp);
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        return formatter.format(date);
     }
 
     // --- --- --- --- --- --- --- //
@@ -59,12 +63,12 @@ public class Report {
         StringBuilder report = new StringBuilder();
 
         report.append("\n\n");
-        report.append("<red>Report by: <gold>").append(getReporter().getName()).append("</gold></red>\n");
-        report.append("<red>Created at: <aqua>").append(getFormattedTimestamp()).append("</aqua></red>\n");
-        report.append("<green>Suspect: <gray>").append(getSuspect().getName()).append("</gray></green>\n");
+        report.append("<green>Report by: <gold>").append(getReporter().getName()).append("</gold></green>\n");
+        report.append("<green>Created at: <aqua>").append(getFormattedTimestamp()).append("</aqua></green>\n");
+        report.append("<green>Suspect: <red>").append(getSuspect().getName()).append("</red></green>\n");
         report.append("<green>Message: <gray>").append(getMessage()).append("</gray></green>\n\n");
 
-        report.append("<gray>What would you like to do?</gray>");
+        report.append("<gray>What would you like to do?</gray>\n");
         report.append("<gray>- <click:run_command:'/tp ").append(getReporter().getName()).append("'><click:run_command:'/gamemode spectator'><yellow>[Teleport to reporter]</yellow></click></click>\n");
         report.append("<gray>- <click:run_command:'/tp ").append(getSuspect().getName()).append("'><click:run_command:'/gamemode spectator'><red>[Teleport to suspect]</red></click></click>\n\n");
 

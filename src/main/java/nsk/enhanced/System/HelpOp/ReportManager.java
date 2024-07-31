@@ -42,13 +42,13 @@ public class ReportManager {
             reports.add(report);
 
             String message = translations.getString("EnhancedChat.messages.helpop_success", "<green>Report with id: <red><id></red> was sent.");
-            player.sendMessage(MiniMessage.miniMessage().deserialize( message.replace("<id>", String.valueOf(reports.size())) ));
+            player.sendMessage(MiniMessage.miniMessage().deserialize( message.replace("<id>", String.valueOf(reports.size() - 1)) ));
 
         } catch (Exception e) {
             enhancedLogger.severe("Report could not be added." + e.getMessage());
 
             String message = translations.getString("EnhancedChat.messages.helpop_failed", "<red>Report was not sent due to server error.");
-            player.sendMessage(MiniMessage.miniMessage().deserialize( message.replace("<id>", String.valueOf(reports.size())) ));
+            player.sendMessage(MiniMessage.miniMessage().deserialize( message.replace("<id>", String.valueOf(reports.size() - 1)) ));
         }
     }
 
@@ -110,14 +110,14 @@ public class ReportManager {
 
         StringBuilder list = new StringBuilder();
 
-        list.append("\n\n<yellow>Report Manager: <green>all active reports</green></yellow").append("\n");
+        list.append("\n\n<yellow>Report Manager: <green>all active reports</green></yellow>").append("\n");
         int size = reports.size();
         for (int i=0; i < size; i++) {
-            list.append("<gray>- ID:<green>").append(i).append("</green> ")
+            list.append("<gray>ID: <green>").append(i).append("</green> <gold>")
                     .append(reports.get(i).getReporter().getName())
-                    .append(" reported <red>").append(reports.get(i).getSuspect().getName()).append("</red>.</gray>\n");
+                    .append("</gold> reported <red>").append(reports.get(i).getSuspect().getName()).append("</red>.</gray>\n");
         }
-        list.append("\n").append("<gray>For more information about each report, use command <green>/helpop show <id></green>.\n\n");
+        list.append("\n").append("<gray>For more information about each report,\nuse command <green>/helpop show <id></green>.\n\n");
 
         return list.toString();
 

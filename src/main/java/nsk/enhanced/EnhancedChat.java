@@ -645,6 +645,10 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
         return devmode;
     }
 
+    public ReportManager getReportManager() {
+        return reportManager;
+    }
+
     private void changeChat(Player player, String type) {
         Character character = getCharacter(player.getUniqueId());
 
@@ -861,7 +865,7 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
 
         if (command.getName().equalsIgnoreCase("report")) {
 
-            if (args.length < 3) {
+            if (args.length < 2) {
                 return false;
             } else {
 
@@ -869,11 +873,16 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
 
                 if (sender instanceof Player) {
                     Player player = (Player) sender;
-                    Player suspect = Bukkit.getPlayer(args[1].toLowerCase());
+                    Player suspect = Bukkit.getPlayer(args[0]);
 
                     if (suspect != null) {
 
-                        reportManager.addReport( new Report(player, suspect, args[2] ));
+                        StringBuilder sb = new StringBuilder();
+                        for (int i=1; i < args.length; i++) {
+                            sb.append(args[i]).append(" ");
+                        }
+
+                        reportManager.addReport( new Report(player, suspect, sb.toString() ));
                         report = translations.getString("EnhancedChat.system.report_success");
 
                     } else {
@@ -905,8 +914,8 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
                         break;
 
                     case "show":
-                        if (args.length == 3 && isNumeric(args[2])) {
-                            Report report = reportManager.getReport(Integer.parseInt(args[2]));
+                        if (args.length == 2 && isNumeric(args[1])) {
+                            Report report = reportManager.getReport(Integer.parseInt(args[1]));
 
                             if (report != null) {
                                 sender.sendMessage(MiniMessage.miniMessage().deserialize(report.toString()));
@@ -917,8 +926,8 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
                         break;
 
                     case "remove":
-                        if (args.length == 3 && isNumeric(args[2])) {
-                            Report report = reportManager.getReport(Integer.parseInt(args[2]));
+                        if (args.length == 2 && isNumeric(args[1])) {
+                            Report report = reportManager.getReport(Integer.parseInt(args[1]));
 
                             if (report != null) {
                                 reportManager.removeReport(report);
@@ -933,6 +942,8 @@ public final class EnhancedChat extends JavaPlugin implements Listener {
                         return false;
 
                 }
+
+                return  true;
 
             }
 
