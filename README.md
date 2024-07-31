@@ -1,5 +1,5 @@
 ![Enhanced Chat](images/title.png)
-# Enhanced Chat
+# Enhanced Chat [ Paused ]
 Enhanced Chat is a Minecraft plugin that offers advanced management of server messages. It allows for the creation of automatic announcements, logging of player messages, and full configuration through a configuration file. 
 
 Additionally, integration with Kyori Adventure enables the use of colorful messages, while special chat modes support different play styles and player safety.
